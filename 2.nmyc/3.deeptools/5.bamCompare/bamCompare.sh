@@ -1,0 +1,11 @@
+bamCompare -b1 ~/workspace/2.nmyc/1.align/3.tf/2.range300/a0.sorted.bam -b2 ~/workspace/2.nmyc/1.align/3.tf/2.range300/c0.sorted.bam -o a0.bdg -of bedgraph --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 -bs 1 &
+bamCompare -b1 ~/workspace/2.nmyc/1.align/3.tf/2.range300/a0.sorted.bam -b2 ~/workspace/2.nmyc/1.align/3.tf/2.range300/c0.sorted.bam -o a0.1.bdg -of bedgraph --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 -bs 1 --ratio first &
+bamCompare -b1 ~/workspace/2.nmyc/1.align/3.tf/2.range300/a0.sorted.bam -b2 ~/workspace/2.nmyc/1.align/3.tf/2.range300/c0.sorted.bam -o a0.2.bdg -of bedgraph --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 -bs 1 --ratio subtract &
+bamCompare -b1 ~/workspace/2.nmyc/1.align/3.tf/2.range300/a0.sorted.bam -b2 ~/workspace/2.nmyc/1.align/3.tf/2.range300/c0.sorted.bam -o a0.3.bdg -of bedgraph --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 -bs 1 --ratio ratio &
+bamCompare -b1 ~/workspace/2.nmyc/1.align/3.tf/2.range300/a0.sorted.bam -b2 ~/workspace/2.nmyc/1.align/3.tf/2.range300/c0.sorted.bam -o a0.4.bdg -of bedgraph --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 -bs 1 --ratio add &
+
+
+bamCompare -b1 /home/qszhu/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0001.sorted.bam -b2 /home/qszhu/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0007.sorted.bam -o 0001.1.bdg -of bedgraph --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 --ratio first &
+bamCompare -b1 /home/qszhu/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0001.sorted.bam -b2 /home/qszhu/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0007.sorted.bam -o 0001.2.bdg -of bedgraph --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 --ratio second &
+bamCompare -b1 /home/qszhu/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0001.sorted.bam -b2 /home/qszhu/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0007.sorted.bam -o 0001.3.bdg -of bedgraph --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 --ratio ratio &
+bamCompare -b1 /home/qszhu/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0001.sorted.bam -b2 /home/qszhu/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0007.sorted.bam -o 0001.4.bdg -of bedgraph --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 --ratio reciprocal_ratio &

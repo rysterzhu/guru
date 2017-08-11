@@ -1,0 +1,1000 @@
+   13  for i in *sam;do samtools view -Sbh $i -o ${i/sam/bam} & echo "samtools view -Sbh $i -o ${i/sam/bam} &" >> run.log; done
+   14  samtools view -H 10.IgG.sam 
+   15  ls
+   16  ll
+   17  cat run.log 
+   18  echo -e "\n" >> run.log 
+   19  cat run.log 
+   20  ll
+   21  samtools view -H 10.IgG.bam 
+   22  ll
+   23  for i in *bam;do samtools sort $i -o ${i/bam/sorted.bam} & echo "samtools sort $i -o ${i/bam/sorted.bam} &" >> run.log; done
+   24  jobs
+   25  ll
+   26  echo "" >> run.log
+   27  ll
+   28  jobs
+   29  ll
+   30  samtools index
+   31  for i in *sorted.bam;do samtools index $i & echo "samtools index $i &" >> run.log; done
+   32  jobs
+   33  ls
+   34  igvtools count
+   35  igvtools count -h
+   36  igvtools count --hlep
+   37  igvtools count --help
+   38  igvtools --help
+   39  ls
+   40  mkdir tdfs
+   41  echo "" >> run.log
+   42  ls
+   43  for i in *sorted.bam;do igvtools count $i tdfs/${i/sorted.bam/tdf} mm9 & echo "igvtools count $i tdfs/${i/sorted.bam/tdf} mm9 &" >> run.log; done
+   44  jobs
+   45  ll
+   46  ls
+   47  cd workspace/2.nmyc/8.enhancer/
+   48  ls
+   49  cd 3.peaks_overlap/
+   50  ls
+   51  cd 6.overlap_kd_ctrl/
+   52  ls
+   53  bedtools intersect -a ../5.overlap_H3K27ac/0101.tab -b ../5.overlap_H3K27ac/0111.tab -wao -r -e -f 0.5 > 0101.bed
+   54  bedtools intersect -b ../5.overlap_H3K27ac/0101.tab -a ../5.overlap_H3K27ac/0111.tab -wao -r -e -f 0.5 > 0111.bed
+   55  awk '$6!="."{if($3-$2>$8-$7){print $1,$2,$3,$4,$5,$9,$10}else{print $6,$7,$8,$4,$5,$9,$10}}' 0101.bed | sort -k1,1 -k2n,2 > temp1.bed
+   56  awk '$6!="."{if($3-$2<$8-$7){print $6,$7,$8,$9,$10,$4,$5}else{print $1,$2,$3,$9,$10,$4,$5}}' 0111.bed | sort -k1,1 -k2n,2 > temp2.bed
+   57   diff temp1.bed temp2.bed
+   58  awk '$6=="."{print $1,$2,$3,$4,$5,$9,$10}' 0101.bed > temp3.bed
+   59  awk '$6=="."{print $1,$2,$3,$9,$10,$4,$5}' 0111.bed > temp4.bed
+   60  cat temp1.bed temp3.bed temp4.bed |sort -k1,1 -k2n,2 > all_rep2.tab
+   61  awk '{if($4=="."){a="O"}else{if($5<0){a="P"}else{a="A"}};if($6=="."){b="O"}else{if($7<0){b="P"}else{b="A"}};print $1,$2,$3,a,b}' all_rep2.tab > flag_rep2.tab
+   62  ll
+   63  mv all.tab all_rep1.tab
+   64  mv all_flag.tab flag_rep1.tab
+   65  ll
+   66  rm temp*
+   67  ll
+   68  cut -f 4 flag_rep1.tab |sort|uniq -c
+   69  cut -f 5 flag_rep1.tab |sort|uniq -c
+   70  cut -f 4 flag_rep2.tab |sort|uniq -c
+   71  cut -f 5 flag_rep2.tab |sort|uniq -c
+   72  ls
+   73  ll
+   74  head flag_rep1.tab 
+   75  awk '$4=="A"&&$5=="A"{a+=0} END{print a}' flag_rep1.tab 
+   76  awk '$4=="A"&&$5=="A"{a+=0} END{print a}' flag_rep2.tab 
+   77  awk '$4=="A"&&$5=="O"{a+=0} END{print a}' flag_rep2.tab 
+   78  awk '$4=="A"&&$5=="A"{a+=1} END{print a}' flag_rep1.tab 
+   79  awk '$4=="A"&&$5=="A"{a+=1} END{print a}' flag_rep2.tab 
+   80  awk '$4=="A"&&$5=="O"{a+=1} END{print a}' flag_rep2.tab 
+   81  awk '$4=="A"&&$5=="P"{a+=1} END{print a}' flag_rep2.tab 
+   82  cut -f 1,2,3 flag_rep1.tab temp1
+   83  cut -f 1,2,3 flag_rep1.tab > temp1
+   84  cut -f 1,2,3 flag_rep2.tab > temp2
+   85  awk '$4!="A"&&$5=="A"{print $1,$2,$3}' flag_rep1.tab >temp3
+   86  awk '$4!="A"&&$5=="A"{print $1,$2,$3}' flag_rep2.tab >temp4
+   87  ll
+   88  awk '$4=="A"&&$5!="A"{print $1,$2,$3}' flag_rep2.tab >temp4
+   89  awk '$4=="A"&&$5!="A"{print $1,$2,$3}' flag_rep1.tab >temp3
+   90  cd workspace/2.nmyc/
+   91  LS
+   92  ls
+   93  cd 8.enhancer/
+   94  ls
+   95  cd ..
+   96  cd 5.findPeaks/
+   97  ls
+   98  cd 1.macs2/
+   99  ls
+  100  cd 3.MYCN.chips.test/
+  101  ls
+  102  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.sorted.bam -n 0011.10 -f BAM -g hs --keep-dup=auto --cutoff-analysis -p 0.05> 0011.10.log &
+  103  head 7.bed 
+  104  sort -k5nr,5 7.bed |less
+  105  sort -k5nr,5 7.bed > test
+  106  less test 
+  107  ls
+  108  awk 'f=="T"{print $1,$2,$3,$10,$8,"+"} $1=="chr"{f="T"}' 0011.10_peaks.xls > 10.bed
+  109  sort -k5nr,5 10.bed > test2
+  110  head test2 
+  111  awk 'f=="T"{print $1,$2,$3,$10,$5,"+"} $1=="chr"{f="T"}' 0011.7_peaks.xls | sort -k5nr,5 > 71.bed
+  112  head 71.bed 
+  113  mascs2
+  114  masc2 callpeak -h
+  115  macs2 callpeak -h
+  116  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.sorted.bam -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0017.sorted.bam -n 0011.11 -f BAMPE -g hs --keep-dup=auto --cutoff-analysis -p 0.05 --broad > 0011.11.log &
+  117  awk 'f=="T"{print $1,$2,$3,$10,$8,"+"} $1=="chr"{f="T"}' 0011.5_peaks.xls > 5.bed
+  118  ll
+  119  less 0011.11_peaks.xls 
+  120  less 0011.11_peaks.broadPeak 
+  121  less 0011.11_peaks.xls 
+  122  head -30 0011.11_peaks.xls
+  123  head -50 0011.11_peaks.xls
+  124  head -10 0011.11_peaks.broadPeak 
+  125  head -10 0011.11_peaks.gappedPeak 
+  126  wc -l 0011.11*
+  127  head 0011.7_peaks.narrowPeak 
+  128  head 7.bed 
+  129  wc -l *narrowPeak
+  130  wc -l *broad*
+  131  ll
+  132  rm test*
+  133  ls
+  134  awk 'f=="T"{print $4} $1=="chr"{f="T"}' 0011.7_peaks.xls > test7
+  135  head /home/qszhu/workspace/2.nmyc/5.findPeaks/2.homer/3.histone/0001.peaks
+  136  pwd
+  137  ll
+  138  cd workspace/4.sin3a/1.align/
+  139  LS
+  140  CD 
+  141  ls
+  142  ls tdfs/
+  143  igv
+  144  ls
+  145  ll
+  146  cd ..
+  147  ls
+  148  mkdir 2.deeptools
+  149  ls
+  150  cd 2.deeptools/
+  151  ls
+  152  mkdir 1.GCBias
+  153  cd 1.GCBias/
+  154  ls
+  155  ls ~/ann/mm9.2bit
+  156  ls ~/ann/
+  157  ls /home/share/
+  158  ls /home/share/2bit/
+  159  computeGCBias 
+  160  computeGCBias -h
+  161  ls ~/workspace/4.sin3a/1.align/*sorted.bam
+  162  ls
+  163  mkdir logs
+  164  nohup computeGCBias -p 8 -b $i --effectiveGenomeSize 2150570000 -l 450 -g /home/share/2bit/mm9.2bit --GCbiasFrequenciesFile ${o/sorted.bam/txt} --biasPlot ${o/sorted.bam/pdf} --plotFileFormat pdf > logs/${o/sorted.bam/log} &
+  165  for i in ~/workspace/4.sin3a/1.align/*sorted.bam; do o=${i##*/}; nohup computeGCBias -p 8 -b $i --effectiveGenomeSize 2150570000 -l 450 -g /home/share/2bit/mm9.2bit --GCbiasFrequenciesFile ${o/sorted.bam/txt} --biasPlot ${o/sorted.bam/pdf} --plotFileFormat pdf > logs/${o/sorted.bam/log} & echo "nohup computeGCBias -p 8 -b $i --effectiveGenomeSize 2150570000 -l 450 -g /home/share/2bit/mm9.2bit --GCbiasFrequenciesFile ${o/sorted.bam/txt} --biasPlot ${o/sorted.bam/pdf} --plotFileFormat pdf > logs/${o/sorted.bam/log} &" >> logs/computeGCBias.log; done
+  166  ls
+  167  top
+  168  ls
+  169  cd ..
+  170  plotFingerprint 
+  171  ls ~/workspace/4.sin3a/1.align/
+  172  ls ~/workspace/4.sin3a/1.align/1*sorted.bam
+  173  ls ~/workspace/4.sin3a/1.align/1[012]*sorted.bam
+  174  ls ~/ann/
+  175  ls /home/share/
+  176  ls /home/share/ann
+  177  ls /home/share/annu
+  178  ls /home/share/ann/useful_annotation/UCSC_tools/
+  179  ls /home/share/ann/useful_annotation/download_FTP/
+  180  ls /home/share/ann/useful_annotation/download_FTP/blacklist/
+  181  cd 2
+  182  jobs
+  183  ls
+  184  mkdir 2.plotFingerprint
+  185  cd 2.plotFingerprint/
+  186  nohup plotFingerprint -b /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/11.Tet1-C.sorted.bam /home/qszhu/workspace/4.sin3a/1.align/12.Tet1-N.sorted.bam -plot 11.Tet.pdf --ignoreDuplicates --centerReads -l IgG Tet1-C Tet1-N -T Tet1 -p 16 > 11.log &
+  187  ls ~/workspace/4.sin3a/1.align/1[034]*sorted.bam
+  188  nohup plotFingerprint -b /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/13.Sin3A-A.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/14.Sin3A-S.sorted.bam -plot 13.Sin3A.pdf --ignoreDuplicates --centerReads -l IgG Sin3A-A Sin3A-S -T Sin3A -p 16 > 13.log &
+  189  jobs
+  190  ls ~/workspace/4.sin3a/1.align/2*sorted.bam
+  191  nohup plotFingerprint -b /home/qszhu/workspace/4.sin3a/1.align/20.IgG.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/21.5hmC.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/22.5mC.sorted.bam -plot 21.5hmC.pdf --ignoreDuplicates --centerReads -l IgG 5hmC 5mC -T MeDIP -p 16 > 21.log &
+  192  jobs
+  193  cd ../
+  194  mkdir 3.plotCoverage
+  195  cd 3.plotCoverage/
+  196  nohup plotCoverage -b /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/11.Tet1-C.sorted.bam /home/qszhu/workspace/4.sin3a/1.align/12.Tet1-N.sorted.bam -plot 11.Tet.pdf --ignoreDuplicates --centerReads -l IgG Tet1-C Tet1-N -T Tet1 -p 16 > 11.log &
+  197  nohup plotCoverage -b /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/13.Sin3A-A.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/14.Sin3A-S.sorted.bam -plot 13.Sin3A.pdf --ignoreDuplicates --centerReads -l IgG Sin3A-A Sin3A-S -T Sin3A -p 16 > 13.log &
+  198  nohup plotCoverage -b /home/qszhu/workspace/4.sin3a/1.align/20.IgG.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/21.5hmC.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/22.5mC.sorted.bam -plot 21.5hmC.pdf --ignoreDuplicates --centerReads -l IgG 5hmC 5mC -T MeDIP -p 16 > 21.log &
+  199  ls
+  200  ll
+  201  cat 11.log 
+  202  jobs
+  203  top
+  204  nohup plotCoverage -b /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/11.Tet1-C.sorted.bam /home/qszhu/workspace/4.sin3a/1.align/12.Tet1-N.sorted.bam -plot 11.Tet.pdf --ignoreDuplicates --centerReads -l IgG Tet1-C Tet1-N -T Tet1 -p 8 > 11.log &
+  205  nohup plotCoverage -b /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/13.Sin3A-A.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/14.Sin3A-S.sorted.bam -plot 13.Sin3A.pdf --ignoreDuplicates --centerReads -l IgG Sin3A-A Sin3A-S -T Sin3A -p 8 > 13.log &
+  206  nohup plotCoverage -b /home/qszhu/workspace/4.sin3a/1.align/20.IgG.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/21.5hmC.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/22.5mC.sorted.bam -plot 21.5hmC.pdf --ignoreDuplicates --centerReads -l IgG 5hmC 5mC -T MeDIP -p 8 > 21.log &
+  207  cat 11.log 
+  208  nohup plotCoverage -b /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam /home/qszhu/workspace/4.sin3a/1.align/11.Tet1-C.sorted.bam /home/qszhu/workspace/4.sin3a/1.align/12.Tet1-N.sorted.bam -o 11.Tet.pdf --ignoreDuplicates --centerReads -l IgG Tet1-C Tet1-N -T Tet1 -p 8 > 11.log &
+  209  nohup plotCoverage -b /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam /home/qszhu/workspace/4.sin3a/1.align/13.Sin3A-A.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/14.Sin3A-S.sorted.bam -o 13.Sin3A.pdf --ignoreDuplicates --centerReads -l IgG Sin3A-A Sin3A-S -T Sin3A -p 8 > 13.log &
+  210  nohup plotCoverage -b /home/qszhu/workspace/4.sin3a/1.align/20.IgG.sorted.bam /home/qszhu/workspace/4.sin3a/1.align/21.5hmC.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/22.5mC.sorted.bam -o 21.5hmC.pdf --ignoreDuplicates --centerReads -l IgG 5hmC 5mC -T MeDIP -p 8 > 21.log &
+  211  jobs
+  212  ls
+  213  jobs
+  214  top
+  215  top
+  216  cd workspace/2.nmyc/
+  217  ls
+  218  cd 5.findPeaks/
+  219  cd 1.macs2/
+  220  cd ../0.input/1.bamtobed/
+  221  ll
+  222  nohup bedtools bamtobed -i 0001.sorted.bam -bedpe > 0001.bed 2> error.log &
+  223  ls
+  224  ll
+  225  less error.log 
+  226  ll
+  227  nohup bedtools bamtobed -i 0002.sorted.bam -bedpe > 0002.bed 2>>error.log &
+  228  nohup bedtools bamtobed -i 0003.sorted.bam -bedpe > 0003.bed 2>> error.log &
+  229  nohup bedtools bamtobed -i 0004.sorted.bam -bedpe > 0004.bed 2>> error.log &
+  230  nohup bedtools bamtobed -i 0005.sorted.bam -bedpe > 0005.bed 2>> error.log &
+  231  nohup bedtools bamtobed -i 0006.sorted.bam -bedpe > 0006.bed 2>> error.log &
+  232  nohup bedtools bamtobed -i 0007.sorted.bam -bedpe > 0007.bed 2>> error.log &
+  233  ll
+  234  less error.log 
+  235  ll
+  236  jobs
+  237  fg 1
+  238  ll
+  239  rm *bed
+  240  ll
+  241  rm *log
+  242  ll
+  243  for i in 001*bam;do nohup bedtools bamtobed -i $i -bedpe > ${i/sorted.bam/bed} 2>>${i/sorted.bam/log} & echo "nohup bedtools bamtobed -i $i -bedpe > ${i/sorted.bam/bed} 2>>${i/sorted.bam/log} &
+  244  " >> run.log; done
+  245  cat run.log 
+  246  for i in ~/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/000*bam; do o=${i##*/}; (samtools sort -n -o $o $i) & echo "(samtools sort -n -o $o $i) &
+  247  " >> run.log
+  248  for i in ~/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/000*bam; do o=${i##*/}; (samtools sort -n -o $o $i) & echo "(samtools sort -n -o $o $i) &" >> run.log; done
+  249  jobs
+  250  ll
+  251  cat *log
+  252  rm 001*log
+  253  ll
+  254  jobs
+  255  cd ..
+  256  ls
+  257  cd ..
+  258  ls
+  259  mkdir 3.macs14
+  260  la
+  261  ls
+  262  cd 3.macs14/
+  263  pwd
+  264  nohup macs
+  265  macs
+  266  nohup macs -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.bed -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0017.bed -n 0001 -f BED -g hs --keep-dup auto --diag --fe-step=10 > 0001.igg.log &
+  267  cat 0001.igg.log 
+  268  nohup macs -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.sorted.bam -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0017.sorted.bam -n 0001 -f BAM -g hs --keep-dup auto --diag --fe-step=10 > 0001.igg.log &
+  269  jobs
+  270  ll
+  271  cd ..2
+  272  cd ../2.homer/
+  273  ls
+  274  cd ../1.macs2/
+  275  ls
+  276  ll
+  277  cd 2.MYCN.chips/
+  278  ll
+  279  macs
+  280  cd ..
+  281  ls
+  282  mkdir 3.MYCN.chips.test
+  283  cd 3.MYCN.chips.test/
+  284  pwd
+  285  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.bed -n 0011 -f BEDPE -g hs --keep-dup auto --diag --fe-step=10 > 0011.log &
+  286  cat 0011.log 
+  287  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.bed -n 0011 -f BEDPE -g hs --keep-dup=auto --diag --fe-step=10 > 0011.log &
+  288  cat 0011.log 
+  289  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.bed -n 0011 -f BEDPE -g hs --keep-dup=auto > 0011.log &
+  290  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.bed -n 0011.2 -f BEDPE -g hs --keep-dup=auto --broad > 0011.log &
+  291  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.bed -n 0011.3 -f BEDPE -g hs --keep-dup=auto --cutoff-analysis > 0011.3.log &
+  292  ll
+  293  wc -l *peaks.xls
+  294  less 0011.3_cutoff_analysis.txt 
+  295  cat 0011.3_cutoff_analysis.txt 
+  296  ll
+  297  head 0011.3_peaks.xls 
+  298  less 0011.3_peaks.xls 
+  299  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.bed -n 0011.4 -f BEDPE -g hs --keep-dup=auto --cutoff-analysis -p 0.01> 0011.4.log &
+  300  ls
+  301  cat 0011.4_cutoff_analysis.txt 
+  302  wc -l 0011.4_peaks.xls 
+  303  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.bed -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0017.bed -n 0011.5 -f BEDPE -g hs --keep-dup=auto --cutoff-analysis -p 0.01> 0011.5.log &
+  304  ls
+  305  cat 0011.5_cutoff_analysis.txt 
+  306  ls
+  307  wc -l 0011.5_peaks.xls 
+  308  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.bed -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0017.bed -n 0011.6 -f BEDPE -g hs --keep-dup=auto --cutoff-analysis -p 0.05> 0011.6.log &
+  309  \
+  310  ll
+  311  wc -l 0011.6_peaks.
+  312  wc -l 0011.6_peaks.xls 
+  313  cat 0011.6_cutoff_analysis.txt 
+  314  ls
+  315  macs2 callpeak -h
+  316  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0001.bed ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0101.bed -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0007.bed ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0107.bed -n 0001.2 -f BEDPE -g hs --keep-dup=auto --cutoff-analysis -q 0.05> 0001.2.log &
+  317  ll
+  318   
+  319  cat 0001.2.log 
+  320  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0001.bed ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0101.bed -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0007.bed ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0107.bed -n 0001.2 -f BEDPE -g hs --keep-dup=auto --cutoff-analysis -p 0.05> 0001.2.log &
+  321  cat 0001.2.log 
+  322  macs2 callpeak -h
+  323  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0001.sorted.bam ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0101.sorted.bam -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0007.sorted.bam ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0107.sorted.bam -n 0001.2 -f BEDPE -g hs --keep-dup=auto --cutoff-analysis -q 0.05> 0001.2.log &
+  324  macs2 callpeak -h
+  325  cat 0001.2.log 
+  326  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.sorted.bam -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0017.sorted.bam -n 0011.7 -f BEDPE -g hs --keep-dup=auto --cutoff-analysis -p 0.05> 0011.7.log &
+  327  cat 011.7.log
+  328  cat 0011.7.log
+  329  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0011.sorted.bam -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0017.sorted.bam -n 0011.7 -f BAMPE -g hs --keep-dup=auto --cutoff-analysis -p 0.05> 0011.7.log &
+  330  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0001.sorted.bam ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0101.sorted.bam -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0007.sorted.bam ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/0107.sorted.bam -n 0001.2 -f BAMPE -g hs --keep-dup=auto --cutoff-analysis -q 0.05> 0001.2.log &
+  331  ls
+  332  ll
+  333  jobs
+  334  ls
+  335  cat 0011.7_cutoff_analysis.txt 
+  336  cat 0011.6_cutoff_analysis.txt 
+  337  ls
+  338  cat 0001.2_cutoff_analysis.txt 
+  339  ls
+  340  jobs
+  341  ls
+  342  nohup macs2 callpeak -t ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/test1.bed -c ~/workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/test7.bed -n 0011.8 -f BEDPE -g hs --keep-dup=auto --cutoff-analysis -p 0.05> 0011.8.log &
+  343  ls
+  344  jobs
+  345  ll
+  346  wc -l 0011.8_peaks.xls 
+  347  wc -l 0011.7_peaks.xls 
+  348  less 0011.7_peaks.xls 
+  349  head -20 0011.[78]_peaks.xls
+  350  head -20 0011.[78]_cut*
+  351  ls
+  352  head *7*
+  353  grep -v # *7* |head 
+  354  grep -v "#" *7* |head 
+  355  grep -v "#" *7_peak* |head 
+  356  grep -v "#" *7_peaks.xls |head 
+  357  less 0011.7_peaks.xls 
+  358  vi 0011.7_peaks.xls 
+  359  head -27 0011.2_peaks.xls 
+  360  nohup macs2 callpeak -t ~/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0011.sorted.bam -c ~/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/0017.sorted.bam -n 0011.9 -f BAMPE -g hs --keep-dup=auto --cutoff-analysis -p 0.05> 0011.9.log &
+  361  ls
+  362  head -30 0011.[79]_peaks.xls
+  363  wc -l 0011.[79]_peaks.xls
+  364  diff 0011.[79]_peaks.xls
+  365  diff 0011.7_peaks.xls 0011.9_peaks.xls 
+  366  ll
+  367  ls
+  368  head -10 0011.7_peaks.xls 
+  369  head -30 0011.7_peaks.xls 
+  370  awk '$0!~/^#/{print $1,$2,$3,$10,$8,"+"}' 0011.7_peaks.xls |LESS
+  371  awk '$0!~/^#/{print $1,$2,$3,$10,$8,"+"}' 0011.7_peaks.xls |less
+  372  awk '$0~/chr/{print $1,$2,$3,$10,$8,"+"}' 0011.7_peaks.xls |less
+  373  awk '$1=="chr"{f="T"} f=="T"{print $1,$2,$3,$10,$8,"+"}' 0011.7_peaks.xls |less
+  374  awk 'f=="T"{print $1,$2,$3,$10,$8,"+"} $1=="chr"{f="T"}' 0011.7_peaks.xls |less
+  375  awk 'f=="T"{print $1,$2,$3,$10,$8,"+"} $1=="chr"{f="T"}' 0011.7_peaks.xls > 7.bed
+  376  ls
+  377  igv
+  378  macs2
+  379  macs2 callpeak
+  380  macs2 callpeak -h
+  381  cd workspace/2.nmyc/5.findPeaks/0.input/1.bamtobed/
+  382  ls
+  383  ll
+  384  for i in ~/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/010*bam; do o=${i##*/}; (samtools sort -n -o $o $i) & echo "(samtools sort -n -o $o $i) &" >> run.log; done
+  385  for i in 000*bam;do nohup bedtools bamtobed -i $i -bedpe > ${i/sorted.bam/bed} 2>>${i/sorted.bam/log} & echo "nohup bedtools bamtobed -i $i -bedpe > ${i/sorted.bam/bed} 2>>${i/sorted.bam/log} &" >> run.log; done
+  386  ll
+  387  for i in 010*bam;do nohup bedtools bamtobed -i $i -bedpe > ${i/sorted.bam/bed} 2>>${i/sorted.bam/log} & echo "nohup bedtools bamtobed -i $i -bedpe > ${i/sorted.bam/bed} 2>>${i/sorted.bam/log} &" >> run.log; done
+  388  for i in ~/workspace/2.nmyc/1.align/2.MYCN.ChIPs/2.range300/011*bam; do o=${i##*/}; (samtools sort -n -o $o $i) & echo "(samtools sort -n -o $o $i) &" >> run.log; done
+  389  ll
+  390  head 0001.bed 
+  391  ls
+  392  ll
+  393  for i in 011*bam;do nohup bedtools bamtobed -i $i -bedpe > ${i/sorted.bam/bed} 2>>${i/sorted.bam/log} & echo "nohup bedtools bamtobed -i $i -bedpe > ${i/sorted.bam/bed} 2>>${i/sorted.bam/log} &" >> run.log; done
+  394  ls
+  395  ll
+  396  ll *log
+  397  rm 0*log
+  398  ll
+  399  ls ~/workspace/1.haESCs/0.cutadapt_QC/
+  400  ls ~/workspace/1.haESCs/0.cutadapt_QC/0.data/
+  401  ls
+  402  jobs
+  403  ls
+  404  head 0011.bed 
+  405  awk '$2>$3{print}' 0011.bed 
+  406  awk '$5>$6{print}' 0011.bed 
+  407  awk '$1!=$4{print}' 0011.bed 
+  408  mkdir 2.macs2_beds
+  409  for i in *bed; do awk '{if($2>$5){$2=$5};if($3<$6){$3=$6};print $1,$2,$3}' $i > 2.macs2_beds/$i; done &
+  410  awk '{if($2>$5){$2=$5};if($3<$6){$3=$6};print $1,$2,$3}' 0011.bed > test1.bed &
+  411  awk '{if($2>$5){$2=$5};if($3<$6){$3=$6};print $1,$2,$3}' 0017.bed > test7.bed &
+  412  jobs
+  413  ls
+  414  jobs
+  415  ll
+  416  ll 2.macs2_beds/
+  417  ll
+  418  rm *bed
+  419  ll
+  420  cd workspace/2.nmyc/
+  421  ls
+  422  cd 5.findPeaks/
+  423  ls
+  424  ll
+  425  cd 1.macs2/
+  426  ll
+  427  ls 2.MYCN.chips/
+  428  cd 2.MYCN.chips/
+  429  cat run.log 
+  430  igv
+  431  cd workspace/4.sin3a/4.microarray/
+  432  ls
+  433  ll
+  434  cd 0.data/
+  435  ls
+  436  ll
+  437  head nor_data.txt 
+  438  ls
+  439  cd Shsm3a2_D0_VS_plko_D0/
+  440  ll
+  441  ll Shsm3a2_D0_VS_plko_D0_fc3.txt 
+  442  head Shsm3a2_D0_VS_plko_D0_fc3.txt 
+  443  awk '$3=="P"||$5=="P"{print $7}' Shsm3a2_D0_VS_plko_D0_fc3.txt |less
+  444  awk '$3=="P"||$5=="P"{print $7}' Shsm3a2_D0_VS_plko_D0_fc3.txt |wc -l
+  445  awk '$3=="P"||$5=="P"{print $7}' Shsm3a2_D0_VS_plko_D0_fc3.txt | sort | uniq |wc -l
+  446  awk '$3=="P"||$5=="P"{if($6<0.5||$6>2){print $7}}' Shsm3a2_D0_VS_plko_D0_fc3.txt | sort | uniq |wc -l
+  447  awk '{if($6<0.5||$6>2){print $7}}' Shsm3a2_D0_VS_plko_D0_fc3.txt | sort | uniq |wc -l
+  448  awk '$3=="P"||$5=="P"{if($6<0.33||$6>3){print $7}}' Shsm3a2_D0_VS_plko_D0_fc3.txt | sort | uniq |wc -l
+  449  awk '$3=="P"||$5=="P"{if($6<0.25||$6>4){print $7}}' Shsm3a2_D0_VS_plko_D0_fc3.txt | sort | uniq |wc -l
+  450  awk '$3=="P"||$5=="P"{if($6<0.25||$6>4){print $7}}' Shsm3a2_D0_VS_plko_D0.txt | sort | uniq |wc -l
+  451  awk '$3=="P"||$5=="P"{if($6<0.25||$6>4){print $7}}' Shsm3a2_D0_VS_plko_D0_fc2.txt | sort | uniq |wc -l
+  452  awk '$3=="P"||$5=="P"{if($6<0.25||$6>4){print $7}}' Shsm3a2_D0_VS_plko_D0_fc2.txt | sort | uniq > de.list
+  453  ll
+  454  awk '$3=="P"||$5=="P"{if($6<0.33||$6>3){print $7}}' Shsm3a2_D0_VS_plko_D0_fc2.txt | sort | uniq > de.list
+  455  cd ../
+  456  ls
+  457  cd rawdata/
+  458  ll
+  459  pwd
+  460  mv BH150088-1_plko\ D0_\(Mouse430_2\).CEL 00.shSin3A_ctrl.CEl
+  461  mv BH150088-1_plko\ D0_\(Mouse430_2\).mas5.CHP 00.shSin3A_ctrl.CHP
+  462  mv BH150088-1_Shsm3a2\ D0_\(Mouse430_2\).CEL 01.shSin3A_kd.CEL
+  463  mv BH150088-1_Shsm3a2\ D0_\(Mouse430_2\).mas5.CHP 01.shSin3A_kd.CHP
+  464  ll
+  465  mv 00.shSin3A_ctrl.CEl 00.shSin3A_ctrl.CEL
+  466  ll
+  467  mv BH150088-1_plko\ D2_\(Mouse430_2\).CEL 00.shSin3A_ctrl_D2.CEL
+  468  mv BH150088-1_plko\ D4_\(Mouse430_2\).CEL 00.shSin3A_ctrl_D4.CEL
+  469  ll
+  470  mv BH150088-1_Shsm3a2\ D2_\(Mouse430_2\).CEL 01.shSin3A_kd_D2.CEL
+  471  ll
+  472  mv BH150088-1_Sham3a2\ D4_\(Mouse430_2\).CEL 01.shSin3A_kd_D4.CEL
+  473  ll
+  474  ls
+  475  cd ..
+  476  ls
+  477  awk '$12=="P"&&$14=="P"{print $14,$6/$2}' nor_data.txt > fc.tab
+  478  head fc.tab 
+  479  awk -v FS="\t" '$12=="P"&&$14=="P"{print $14,$6/$2}' nor_data.txt > fc.tab
+  480  head fc.tab 
+  481  awk -v FS="\t" '$12=="P"&&$8=="P"{print $14,$6/$2}' nor_data.txt > fc.tab
+  482  head fc.tab 
+  483  less fc.tab 
+  484  awk -v FS="\t" '$12=="P"&&$8=="P"&&$14!=""{print $14,$6/$2}' nor_data.txt > fc.tab
+  485  less fc.tab 
+  486  awk -v FS="\t" '$12=="P"&&$8=="P"&&$14!=""{print $14,$6-$2}' nor_data.txt > fc.tab
+  487  awk '$2>=1{a+=1} $2<=-1{b+=1} END{print a,b}' fc.tab 
+  488  awk '$2>=log2(1.5){a+=1} $2<=-1{b+=1} END{print a,b}' fc.tab 
+  489  awk '$2>=log(1.5)/log(2){a+=1} $2<=-1{b+=1} END{print a,b}' fc.tab 
+  490  awk '$2>=0.585{a+=1} $2<=-1{b+=1} END{print a,b}' fc.tab 
+  491  awk -v FS="\t" '$12=="P"&&$8=="P"&&$14!=""&&$6>8&&$2>8{print $14,$6-$2}' nor_data.txt > fc.tab
+  492  awk '$2>=1{a+=1} $2<=-1{b+=1} END{print a,b}' fc.tab 
+  493  awk '$2>=0.585{a+=1} $2<=-0.585{b+=1} END{print a,b}' fc.tab 
+  494  awk '$2>=1{a+=1,print $1 >> "de.list"} $2<=-1{b+=1, print $1 >> "de.list"} END{print a,b}' fc.tab 
+  495  awk '$2>=1{a+=1;print $1 >> "de.list"} $2<=-1{b+=1; print $1 >> "de.list"} END{print a,b}' fc.tab 
+  496  wc -l de.list 
+  497  ls
+  498  grep Lefty de.list 
+  499  grep Lefty fc.tab 
+  500  ls
+  501  tar -zxvf microarray_RAW.tar 
+  502  tar microarray_RAW.tar 
+  503  tar xvf microarray_RAW.tar 
+  504  ll
+  505  mkdir GSE
+  506  mv *gz G
+  507  mv *gz GS
+  508  mv *gz GSE
+  509  cd GSE/
+  510  ll
+  511  unzip *
+  512  ll
+  513  for i in *; do unzip $i;done
+  514  ll
+  515  for i in *; do gunzip $i;done
+  516  ll
+  517  mv GSM611209.CEL 031.shTet1_scr.CEl
+  518  mv GSM611210.CEL 032.shTet1_scr.CEl
+  519  mv GSM611211.CEL 033.shTet1_scr.CEl
+  520  mv GSM611212.CEL 041.shTet1_scr.CEl
+  521  mv GSM611213.CEL 042.shTet1_4.CEl
+  522  mv GSM611214.CEL 043.shTet1_4.CEl
+  523  mv GSM611215.CEL 051.shTet1_5.CEl
+  524  mv GSM611216.CEL 052.shTet1_5.CEl
+  525  mv GSM611217.CEL 053.shTet1_5.CEl
+  526  ll
+  527  mv 041.shTet1_scr.CEl 041.shTet1_4.CEl 
+  528  ll
+  529  pwd
+  530  for i in *CEl; do mv $i ${i/l/L};done
+  531  ll
+  532  pwd
+  533  cd ../..
+  534  ls
+  535  mkdir 1.GSE24842
+  536  cd 1.GSE24842/
+  537  ls
+  538  cp ../0.data/GSE/GSE24842_series_matrix.txt ./
+  539  ll
+  540  pwd
+  541  pwd GSE24842_series_matrix.txt 
+  542  ll
+  543  tail GSE24842_annotation.tab 
+  544  ll
+  545  head de.tet5.tab 
+  546  cut -f 6 de.tet5.tab |less
+  547  cut -f 7 de.tet5.tab |less
+  548  awk 'NR>1{print $7}' de.tet5.tab > de.tet5.list
+  549  ls
+  550  ls
+  551  cd workspace/
+  552  ls
+  553  cd 4.sin3a/
+  554  ls
+  555  cd 2.deeptools/
+  556  ls
+  557  mkdir 4.bamCoverage
+  558  cd 4.bamCoverage/
+  559  bamCoverage 
+  560  mkdir logs
+  561  for i in ~/workspace/4.sin3a/1.align/*sorted.bam; do o=${i##*/}; nohup bamCoverage -b $i -o $wdir/${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 –ignoreDuplicates > logs/${o/sorted.bam/log} & echo "nohup bamCoverage -b $i -o $wdir/${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 –ignoreDuplicates > logs/${o/sorted.bam/log} &" >> logs/run.log ; done
+  562  ls
+  563  cat logs/10.IgG.log 
+  564  rm logs/*
+  565  for i in ~/workspace/4.sin3a/1.align/*sorted.bam; do o=${i##*/}; nohup bamCoverage -b $i -o ${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 –ignoreDuplicates > logs/${o/sorted.bam/log} & echo "nohup bamCoverage -b $i -o $wdir/${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 –ignoreDuplicates > logs/${o/sorted.bam/log} &" >> logs/run.log ; done
+  566  cat logs/10.IgG.log 
+  567  rm logs/*
+  568  for i in ~/workspace/4.sin3a/1.align/*sorted.bam; do o=${i##*/}; nohup bamCoverage -b $i -o ${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 –ignoreDuplicates > logs/${o/sorted.bam/log} & echo "nohup bamCoverage -b $i -o $wdir/${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 –-ignoreDuplicates > logs/${o/sorted.bam/log} &" >> logs/run.log ; done
+  569  rm logs/*
+  570  for i in ~/workspace/4.sin3a/1.align/*sorted.bam; do o=${i##*/}; nohup bamCoverage -b $i -o ${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 –ignoreDuplicates > logs/${o/sorted.bam/log} & echo "nohup bamCoverage -b $i -o $wdir/${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 --ignoreDuplicates > logs/${o/sorted.bam/log} &" >> logs/run.log ; done
+  571  rm logs/*
+  572  for i in ~/workspace/4.sin3a/1.align/*sorted.bam; do o=${i##*/}; nohup bamCoverage -b $i -o ${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 --ignoreDuplicates > logs/${o/sorted.bam/log} & echo "nohup bamCoverage -b $i -o ${o/sorted.bam/bw} --normalizeUsingRPKM -p 8 --ignoreDuplicates > logs/${o/sorted.bam/log} &" >> logs/run.log ; done
+  573  josb
+  574  jobs
+  575  cd ..
+  576  ll 1.GCBias/logs/
+  577  ll 2.plotFingerprint/*lo
+  578  ll 2.plotFingerprint/*log
+  579  ll 3.plotCoverage/*log
+  580  cat 3.plotCoverage/11.
+  581  cat 3.plotCoverage/11.log 
+  582  ls
+  583  cd 4.bamCoverage/
+  584  ls
+  585  ll
+  586  cd ..
+  587  ls
+  588  mkdir 5.bamCompare
+  589  cd 5.bamCompare/
+  590  ls
+  591  for i in ~/workspace/4.sin3a/1.align/[12][1234].*sorted.bam; do o=${i##*/}; echo ${o:0:1}0.IgG.sorted.bam; done
+  592  bamCompare 
+  593  mkdir logs
+  594  for i in ~/workspace/4.sin3a/1.align/[12][1234].*sorted.bam; do o=${i##*/}; nohup bamCompare -b1 $i -b2 ~/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -o ${o/sorted.bam/bw} --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 > logs/${o/sorted.bam/log} & echo "nohup bamCompare -b1 $i -b2 ~/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -o ${o/sorted.bam/bw} --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 > logs/${o/sorted.bam/log} &" >> logs/run.log; done
+  595  ls
+  596  cd ..
+  597  ls
+  598  cd 4.bamCoverage/
+  599  ls
+  600  ll
+  601  ls ~?ann
+  602  ls ~/ann
+  603  ls /home/share/
+  604  ls /home/share/ann
+  605  ls /home/share/ann/useful_annotation/
+  606  ls /home/share/ann/useful_annotation/download_FTP/GENCODE/
+  607  head /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed 
+  608  head ~/ann/mm10.b
+  609  head ~/ann/mm10.bed 
+  610  head /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm10.RefSeq.bed 
+  611  cd ..
+  612  mkdir 5.ref-point_TSS
+  613  ls
+  614  mv 5.ref-point_TSS/ 6.ref-point_TSS/
+  615  (computeMatrix reference-point -S 4.bamCoverage/2*.bw -R /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed -a 3000 -b 3000 --referencePoint TSS --outFileSortedRegions 6.ref-point_TSS/2.5hmC.bamCoverage.bed -o 6.ref-point_TSS/2.5hmC.bamCoverage.gz -p 16; plotProfile -m 6.ref-point_TSS/2.5hmC.bamCoverage.gz -out 6.ref-point_TSS/2.5hmC.bamCoverage.pdf --perGroup --dpi 720)&
+  616  (computeMatrix reference-point -S 5.bamCompare/2*.bw -R /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed -a 3000 -b 3000 --referencePoint TSS --outFileSortedRegions 6.ref-point_TSS/2.5hmC.bamCompare.bed -o 6.ref-point_TSS/2.5hmC.bamCompare.gz -p 16; plotProfile -m 6.ref-point_TSS/2.5hmC.bamCompare.gz -out 6.ref-point_TSS/2.5hmC.bamCompare.pdf --perGroup --dpi 720)&
+  617  ll
+  618  (computeMatrix reference-point -S 4.bamCoverage/1*.bw -R /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed -a 3000 -b 3000 --referencePoint TSS --outFileSortedRegions 6.ref-point_TSS/1.Sin3A.bamCoverage.bed -o 6.ref-point_TSS/1.Sin3A.bamCoverage.gz -p 16; plotProfile -m 6.ref-point_TSS/1.Sin3A.bamCoverage.gz -out 6.ref-point_TSS/1.Sin3A.bamCoverage.pdf --perGroup --dpi 720)&
+  619  (computeMatrix reference-point -S 5.bamCompare/1*.bw -R /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed -a 3000 -b 3000 --referencePoint TSS --outFileSortedRegions 6.ref-point_TSS/1.Sin3A.bamCompare.bed -o 6.ref-point_TSS/1.Sin3A.bamCompare.gz -p 16; plotProfile -m 6.ref-point_TSS/1.Sin3A.bamCompare.gz -out 6.ref-point_TSS/1.Sin3A.bamCompare.pdf --perGroup --dpi 720)&
+  620  ll
+  621  jobs
+  622  ll
+  623  ls
+  624  cd ..
+  625  mkdir 3.findPeaks
+  626  cd 3.findPeaks/
+  627  ls
+  628  mkdir 1.macs2
+  629  cd 1.macs2/
+  630  ls
+  631  macs2
+  632  pwd
+  633  mkdir logs
+  634  for i in ~/workspace/4.sin3a/1.align/[12][1234].*sorted.bam; do o=${i##*/}; nohup macs2 callpeak -t $i -c /home/qszhu/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -n ${i/sorted.bam/1} --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/logs/${i/sorted.bam/log} & echo "nohup macs2 callpeak -t $i -c /home/qszhu/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -n ${i/sorted.bam/1} --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/logs/${i/sorted.bam/log} &" >> logs/run.log; done
+  635  cat logs/run.log
+  636  ll logs/
+  637  for i in ~/workspace/4.sin3a/1.align/[12][1234].*sorted.bam; do o=${i##*/}; nohup macs2 callpeak -t $i -c /home/qszhu/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -n ${i/sorted.bam/1} --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/logs/${i/sorted.bam/log} & echo "nohup macs2 callpeak -t $i -c /home/qszhu/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -n ${i/sorted.bam/1} --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/logs/${i/sorted.bam/log} &" >> logs/run.log; done
+  638  for i in ~/workspace/4.sin3a/1.align/[12][1234].*sorted.bam; do o=${i##*/}; nohup macs2 callpeak -t $i -c /home/qszhu/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -n ${o/sorted.bam/1} --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/logs/${o/sorted.bam/log} & echo "nohup macs2 callpeak -t $i -c /home/qszhu/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -n ${o/sorted.bam/1} --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/logs/${o/sorted.bam/log} &" >> logs/run.log; done
+  639  for i in ~/workspace/4.sin3a/1.align/[12][1234].*sorted.bam; do o=${i##*/}; nohup macs2 callpeak -t $i -c /home/qszhu/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -n ${o/sorted.bam/1} --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/logs/${o/sorted.bam/log} & echo "nohup macs2 callpeak -t $i -c /home/qszhu/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -n ${o/sorted.bam/1} --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/logs/${o/sorted.bam/log} &" >> logs/run.log; done
+  640  \
+  641  ls
+  642  ll
+  643  wc -l *narrowPeak
+  644  ls
+  645  ll
+  646  nohup macs2 callpeak -t /home/qszhu/workspace/4.sin3a/1.align/13.Sin3A-A.sorted.bam  /home/qszhu/workspace/4.sin3a/1.align/14.Sin3A-S.sorted.bam -c /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam -n 13.Sin3A.2 --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/logs/13.Sin3A.2.log &
+  647  nohup macs2 callpeak -t /home/qszhu/workspace/4.sin3a/1.align/11.Tet1-C.sorted.bam /home/qszhu/workspace/4.sin3a/1.align/12.Tet1-N.sorted.bam -c /home/qszhu/workspace/4.sin3a/1.align/10.IgG.sorted.bam -n 11.Tet1.2 --outdir /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2 -f BAM -g mm > /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/logs/11.Tet1.2.log &
+  648  jobs
+  649  ll
+  650  less 11.Tet1-C.1_peaks.xls 
+  651  wc -l 8
+  652  wc -l *
+  653  ll
+  654  wc -l *nar*
+  655  ls
+  656  cd ..
+  657  ls
+  658  mkdir 2.annotatePeaks
+  659  cd 2.annotatePeaks/
+  660  ls
+  661  annotatePeaks.pl 
+  662  annotatePeaks.pl ../1.macs2/13.Sin3A-A.1_peaks.narrowPeak mm9 > 13.Sin3A-A.1_peaks.txt &
+  663  ll
+  664  less /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.CGI 
+  665  head /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.CGI 
+  666  cut -f 2,3,4,5 /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.CGI > mm9.cgi
+  667  cut -f 2,3,4 /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.CGI > mm9.cgi
+  668  head mm9.cgi 
+  669  awk 'NR>1{print $2,$3,$4,$5,.,+}' /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.CGI > mm9.cgi
+  670  awk 'NR>1{print $2,$3,$4,$5,".","+"}' /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.CGI > mm9.cgi
+  671  head mm9.cgi 
+  672  awk -v FS="\t" 'NR>1{print $2,$3,$4,$5,".","+"}' /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.CGI > mm9.cgi
+  673  head mm9.cgi 
+  674  awk 'NR>1{print $2,$3,$4,"CpG_"$6,".","+"}' /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.CGI > mm9.cgi
+  675  head mm9.cgi 
+  676  mv mm9.cgi mm9.bed
+  677  cd ../1.macs2/
+  678  ll
+  679  head 11.Tet1-C.1_peaks.narrowPeak 
+  680  bedtools intersect -a 11.Tet1-C.1_peaks.narrowPeak -b 12.Tet1-N.1_peaks.narrowPeak -r -f 0.5 |wc -l
+  681  wc -l 11*narr* 12*narr*
+  682  wc -l *nar*
+  683  cd ../2.annotatePeaks/
+  684  ll
+  685  head 13.Sin3A-A.1_peaks.txt 
+  686  awk '$10>=-500&$10<=1500{print $16}' 13.Sin3A-A.1_peaks.txt |sort|uniq -c > temp
+  687  awk '$10>=-500&&$10<=1500{print $16}' 13.Sin3A-A.1_peaks.txt |sort|uniq -c > temp
+  688  wc -l temp 
+  689  head temp
+  690  awk -F "\t" '$10>=-500&&$10<=1500{print $16}' 13.Sin3A-A.1_peaks.txt |sort|uniq -c > temp
+  691  head temp 
+  692  wc -l temp 
+  693  awk -F "\t" '$10>=-500&&$10<=1500{print $16}' 13.Sin3A-A.1_peaks.txt | wc -l
+  694  awk -F "\t" '$10>=-500&&$10<=1500{print $16}' 13.Sin3A-A.1_peaks.txt | sort | uniq -c | wc -l
+  695  awk -F "\t" '$10>=-500&&$10<=1500&&$19!="ncRNA"{print $16}' 13.Sin3A-A.1_peaks.txt | sort | uniq -c | wc -l
+  696  awk -F "\t" '$10>=-500&&$10<=1500&&$19!="protein-coding"{print $16}' 13.Sin3A-A.1_peaks.txt | sort | uniq -c | wc -l
+  697  awk -F "\t" '$10>=-500&&$10<=1500&&$19!="protein-coding"{print $16}' 13.Sin3A-A.1_peaks.txt | wc -l
+  698  awk -F "\t" '$10>=-500&&$10<=1500&&$19=="protein-coding"{print $16}' 13.Sin3A-A.1_peaks.txt | sort | uniq -c | wc -l
+  699  awk -F "\t" '$10>=-500&&$10<=1500&&$19=="protein-coding"{print $16}' 13.Sin3A-A.1_peaks.txt | sort | uniq > 13.genelist
+  700  annotatePeaks.pl ../1.macs2/12.Tet1-N.1_peaks.narrowPeak mm9 > 12.Tet1-N.1_peaks.txt &
+  701  ll
+  702  awk -F "\t" '$10>=-500&&$10<=1500{print $16}' 12.Tet1-N.1_peaks.txt | wc -l
+  703  awk -F "\t" '$10>=-500&&$10<=1500{print $16}' 12.Tet1-N.1_peaks.txt | sort | uniq -c | wc -l
+  704  awk -F "\t" '$10>=-500&&$10<=1500&&$19!="ncRNA"{print $16}' 12.Tet1-N.1_peaks.txt | sort | uniq -c | wc -l
+  705  awk -F "\t" '$10>=-500&&$10<=1500&&$19=="protein-coding"{print $16}' 12.Tet1-N.1_peaks.txt | sort | uniq -c | wc -l
+  706  awk -F "\t" '$10>=-500&&$10<=1500&&$19=="protein-coding"{print $16}' 12.Tet1-N.1_peaks.txt | sort | uniq > 12.genelist
+  707  ll
+  708  head *list
+  709  cd ..
+  710  ls
+  711  cd 1.macs2/
+  712  ll
+  713  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 |wc -l
+  714  wc -l 12.Tet1-N.1_peaks.narrowPeak 13.Sin3A-A.1_peaks.narrowPeak
+  715  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 -v |wc -l
+  716  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.3 |wc -l
+  717  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak |wc -l
+  718  ll
+  719  cd ../an
+  720  ls
+  721  cd ../
+  722  ls
+  723  cd 2.annotatePeaks/
+  724  ls
+  725  awk -F "\t" '$10>=-1500&&$10<=500{print $16}' 13.Sin3A-A.1_peaks.txt | wc -l
+  726  awk -F "\t" '$10>=-1500&&$10<=500{print $16}' 13.Sin3A-A.1_peaks.txt | sort | uniq -c | wc -l
+  727  awk -F "\t" '$10>=-1500&&$10<=500&&$19!="ncRNA"{print $16}' 13.Sin3A-A.1_peaks.txt | sort | uniq -c | wc -l
+  728  awk -F "\t" '$10>=-1500&&$10<=500&&$19=="protein-coding"{print $16}' 13.Sin3A-A.1_peaks.txt | sort | uniq -c | wc -l
+  729  awk -F "\t" '$10>=-1500&&$10<=500&&$19=="protein-coding"{print $16}' 13.Sin3A-A.1_peaks.txt | sort | uniq > 13.list
+  730  awk -F "\t" '$10>=-1500&&$10<=500{print $16}' 12.Tet1-N.1_peaks.txt | wc -l
+  731  awk -F "\t" '$10>=-1500&&$10<=500{print $16}' 12.Tet1-N.1_peaks.txt | sort | uniq -c | wc -l
+  732  awk -F "\t" '$10>=-1500&&$10<=500&&$19!="ncRNA"{print $16}' 12.Tet1-N.1_peaks.txt | sort | uniq -c | wc -l
+  733  awk -F "\t" '$10>=-1500&&$10<=500&&$19=="protein-coding"{print $16}' 12.Tet1-N.1_peaks.txt | sort | uniq -c | wc -l
+  734  awk -F "\t" '$10>=-1500&&$10<=500&&$19=="protein-coding"{print $16}' 12.Tet1-N.1_peaks.txt | sort | uniq > 12.list
+  735  igv
+  736  cd workspace/
+  737  ls
+  738  cd 4.sin3a/
+  739  ls
+  740  cd 4.microarray/
+  741  ls
+  742  ls 1.GSE24842/
+  743  ls
+  744  cd ../2.deeptools/
+  745  ll
+  746  mkdir 7.plotProfile_summit_Sin3A-A
+  747  cd 7.plotProfile_summit_Sin3A-A/
+  748  cd ..
+  749  ls 5.bamCompare/
+  750  (computeMatrix reference-point -S 5.bamCompare/12.Tet1-N.bw  5.bamCompare/13.Sin3A-A.bw 5.bamCompare/21.5hmC.bw  5.bamCompare/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/3.Sin3A-A.sorted_summits.bed -a 3000 -b 3000 --referencePoint center --sortRegions keep --outFileSortedRegions 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.bed -o 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.gz -p 16; plotProfile -m 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.gz -out 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720)&
+  751  computeMatrix reference-point
+  752  computeMatrix reference-point -S 5.bamCompare/12.Tet1-N.bw  5.bamCompare/13.Sin3A-A.bw 5.bamCompare/21.5hmC.bw  5.bamCompare/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/3.Sin3A-A.sorted_summits.bed -a 3000 -b 3000 --referencePoint center --sortRegions keep --outFileSortedRegions 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.bed -o 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.gz -p 16
+  753  ll
+  754  computeMatrix reference-point -h
+  755  computeMatrix reference-point -S 5.bamCompare/12.Tet1-N.bw  5.bamCompare/13.Sin3A-A.bw 5.bamCompare/21.5hmC.bw  5.bamCompare/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/3.Sin3A-A.sorted_summits.bed -a 3000 -b 3000 --referencePoint center --sortRegions keep --outFileSortedRegions 7.plotProfile_summit_Sin3A-A/1.sorted_heatmap.bed -o 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.gz
+  756  computeMatrix reference-point -S 5.bamCompare/1*.bw -R /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed -a 3000 -b 3000 --referencePoint TSS --outFileSortedRegions 6.ref-point_TSS/1.Sin3A.bamCompare.bed -o 6.ref-point_TSS/1.Sin3A.bamCompare.gz -p 16 &
+  757  ll
+  758  ll 5.bamCompare/
+  759  head /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed
+  760  head /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/3.Sin3A-A.sorted_summits.bed
+  761  computeMatrix reference-point -S 5.bamCompare/12.Tet1-N.bw  5.bamCompare/13.Sin3A-A.bw 5.bamCompare/21.5hmC.bw  5.bamCompare/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/3.Sin3A-A.sorted_summits2.bed -a 3000 -b 3000 --referencePoint center --outFileSortedRegions 7.plotProfile_summit_Sin3A-A/1.sorted_heatmap.bed -o 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.gz -p 16
+  762  computeMatrix reference-point -S 5.bamCompare/1*.bw -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/3.Sin3A-A.sorted_summits2.bed -a 3000 -b 3000 --referencePoint center --outFileSortedRegions 7.plotProfile_summit_Sin3A-A/1.sorted_heatmap.bed -o 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.gz -p 16
+  763  computeMatrix reference-point -S 5.bamCompare/12.Tet1-N.bw  5.bamCompare/13.Sin3A-A.bw 5.bamCompare/21.5hmC.bw  5.bamCompare/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/3.Sin3A-A.sorted_summits2.bed -a 3000 -b 3000 --referencePoint TSS --outFileSortedRegions 7.plotProfile_summit_Sin3A-A/1.sorted_heatmap.bed -o 7.plotProfile_summit_Sin3A-A/1.sorted_summits.bamCompare.gz -p 16
+  764  ll
+  765  cd 7.plotProfile_summit_Sin3A-A/
+  766  ll
+  767  cd ..
+  768  mv 7.plotProfile_summit_Sin3A-A/ 7.Sin3A-A_summit
+  769  plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720
+  770  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/5.bamCompare
+  771  bamCoverage_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/4.bamCoverage
+  772  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/7.Sin3A-A_summit
+  773  plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720
+  774  plotHeatmap
+  775  plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "Sin3A Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center
+  776  plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sin3A Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center
+  777  ls
+  778  mkdir 8.5hmC_summit
+  779  computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/21.5hmC.1_summits.bed -a 3000 -b 3000 --sortRegions descend --sortUsing median --sortUsingSamples 3 --referencePoint TSS --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_summits.bamCompare.gz -p 16
+  780  plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "5hmC Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit
+  781  plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sort by 5hmC" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit
+  782  ll
+  783  mkdir 51.bamCompare.subtract
+  784  cd 51.bamCompare.subtract/
+  785  for i in ~/workspace/4.sin3a/1.align/[12][1234].*sorted.bam; do o=${i##*/}; nohup bamCompare -b1 $i -b2 ~/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -o ${o/sorted.bam/bw} --ratio subtract --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 > logs/${o/sorted.bam/log} & echo "nohup bamCompare -b1 $i -b2 ~/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -o ${o/sorted.bam/bw} --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 > logs/${o/sorted.bam/log} &" >> logs/run.log; done
+  786  mkdir logs
+  787  for i in ~/workspace/4.sin3a/1.align/[12][1234].*sorted.bam; do o=${i##*/}; nohup bamCompare -b1 $i -b2 ~/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -o ${o/sorted.bam/bw} --ratio subtract --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 > logs/${o/sorted.bam/log} & echo "nohup bamCompare -b1 $i -b2 ~/workspace/4.sin3a/1.align/${o:0:1}0.IgG.sorted.bam -o ${o/sorted.bam/bw} --normalizeUsingRPKM --ignoreDuplicates -ignore chrM -p 16 > logs/${o/sorted.bam/log} &" >> logs/run.log; done
+  788  ll
+  789  jobs
+  790  cd ..
+  791  ls
+  792  ll
+  793  ls
+  794  ls 6.ref-point_TSS/
+  795  (computeMatrix reference-point -S 51.bamCompare.subtract/2*.bw -R /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed -a 3000 -b 3000 --referencePoint TSS -o 6.ref-point_TSS/2.5hmC.51.bamCompare.gz -p 16; plotProfile -m 6.ref-point_TSS/2.5hmC.51.bamCompare.gz -out 6.ref-point_TSS/2.5hmC.51.bamCompare.pdf --perGroup --dpi 720)&
+  796  (computeMatrix reference-point -S 51.bamCompare.subtract/1*.bw -R /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed -a 3000 -b 3000 --referencePoint TSS -o 6.ref-point_TSS/1.Sin3A.51.bamCompare.gz -p 16; plotProfile -m 6.ref-point_TSS/1.Sin3A.51.bamCompare.gz -out 6.ref-point_TSS/1.Sin3A.51.bamCompare.pdf --perGroup --dpi 720)&
+  797  ls
+  798  jobs
+  799  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  800  bamCoverage_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/4.bamCoverage
+  801  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/7.Sin3A-A_summit
+  802  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/3.Sin3A-A.sorted_summits.bed -a 3000 -b 3000 --referencePoint TSS --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_summits.bamCompare.gz -p 16; plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "Sin3A Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center; plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sin3A Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center)&
+  803  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  804  bamCoverage_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/4.bamCoverage
+  805  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/8.5hmC_summit
+  806  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/21.5hmC.1_summits.bed -a 3000 -b 3000 --sortRegions descend --sortUsing median --sortUsingSamples 3 --referencePoint TSS --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_summits.bamCompare.gz -p 32; plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "5hmC Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit; plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sort by 5hmC" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit)
+  807  &
+  808  ls
+  809  jobs
+  810  mkdir 9.TSS_sort_median
+  811  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  812  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/9.TSS_sort_median
+  813  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed -a 3000 -b 3000 --sortRegions descend --sortUsing median --sortUsingSamples 3 --referencePoint TSS --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_summits.bamCompare.gz -p 32; plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "5hmC Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit; plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sort by 5hmC" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit) &
+  814  plotHeatmap 
+  815  plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.kmeans4.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sort by 5hmC" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit --kmeans 4 
+  816  plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.kmeans4.heatmap.bamCompare.pdf --dpi 720 --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit --kmeans 4 
+  817  plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.kmeans2.heatmap.bamCompare.pdf --dpi 720 --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit --kmeans 2 --colorList 'white,blue' 
+  818  ls
+  819  mkdir 10.Tet1-N_summit
+  820  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  821  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/10.Tet1-N_summit
+  822  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/12.Tet1-N.1_summits.bed -a 3000 -b 3000 --sortRegions descend --sortUsing median --sortUsingSamples 1 --referencePoint TSS --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_summits.bamCompare.gz -p 16; plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "Tet1 Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit; plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sort by 5hmC" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit --colorList 'white,blue' ; plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.kmeans2.heatmap.bamCompare.pdf --dpi 720 --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit --kmeans 2 --colorList 'white,blue' ; )&
+  823   
+  824  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/12.Tet1-N.1_summits.bed -a 3000 -b 3000 --sortRegions descend --sortUsing mean --sortUsingSamples 2 --referencePoint TSS --outFileSortedRegions $wdir/1.sorted_heatmap2.bed -o $wdir/1.sorted_summits2.bamCompare.gz -p 32; plotHeatmap -m $wdir/1.sorted_summits2.bamCompare.gz -out $wdir/1.sorted_summits2.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sort by Sin3A" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel summit --colorList 'white,blue')&
+  825  mkdir 11.intersect_peaks
+  826  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  827  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/11.intersect_peaks
+  828  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/12-13.intersect_peaks.txt -a 3000 -b 3000 --sortRegions descend --sortUsing mean --sortUsingSamples 1 --referencePoint center --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_centers.bamCompare.gz -p 16; plotProfile -m $wdir/1.sorted_centers.bamCompare.gz -out $wdir/1.sorted_centers.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "co-Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center; plotHeatmap -m $wdir/1.sorted_centers.bamCompare.gz -out $wdir/1.sorted_centers.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sort by tet1" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center --colorList 'white,blue' ; )&
+  829  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  830  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/11.intersect_peaks
+  831  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/12-13.intersect.narrowPeak -a 3000 -b 3000 --sortRegions descend --sortUsing mean --sortUsingSamples 1 --referencePoint center --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_centers.bamCompare.gz -p 16; plotProfile -m $wdir/1.sorted_centers.bamCompare.gz -out $wdir/1.sorted_centers.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "co-Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center; plotHeatmap -m $wdir/1.sorted_centers.bamCompare.gz -out $wdir/1.sorted_centers.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sort by tet1" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center --colorList 'white,blue' ; )&
+  832  head /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed
+  833   awk 'NR==FNR{key[$1]} NR>FNR{if($4 in key){print $0 >> mm9.co-target.bed}else{print $0 >> mm9.un-target.bed}}' /home/qszhu/workspace/4.sin3a/3.findPeaks/2.annotatePeaks/12-13.refseq /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed 
+  834   awk 'NR==FNR{key[$1]} NR>FNR{if($4 in key){print $0 >> "mm9.co-target.bed"}else{print $0 >> "mm9.un-target.bed"}}' /home/qszhu/workspace/4.sin3a/3.findPeaks/2.annotatePeaks/12-13.refseq /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed 
+  835  ll
+  836  head mm9.*
+  837  wc -l mm9*
+  838  wc -l /home/share/ann/useful_annotation/download_FTP/UCSC_table_broswer/mm9.RefSeq.bed
+  839  mkdir 12.co-target_TSS
+  840  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  841  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/12.co-target_TSS
+  842  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/2.deeptools/mm9.co-target.bed /home/qszhu/workspace/4.sin3a/2.deeptools/mm9.un-target.bed -a 3000 -b 3000 --referencePoint TSS --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_summits.bamCompare.gz -p 32; plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "co-target genes" "un-target genes" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel TSS; plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "co-target genes" "un-target genes" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel TSS) &
+  843  jobs
+  844  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  845  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/11.intersect_peaks
+  846  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/12-13.intersect.narrowPeak -a 1000 -b 1000 --sortRegions descend --sortUsing mean --sortUsingSamples 3 --referencePoint center --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_centers.bamCompare.gz -p 16; plotProfile -m $wdir/1.sorted_centers.bamCompare.gz -out $wdir/1.sorted_centers.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "co-Peak" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center; plotHeatmap -m $wdir/1.sorted_centers.bamCompare.gz -out $wdir/1.sorted_centers.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "Sort by 5hmC" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center --colorList 'white,blue' -T intersect_peaks; )&
+  847  top
+  848  ls
+  849  cd workspace/4.sin3a/
+  850  ls
+  851  cd 3.findPeaks/
+  852  ls
+  853  cd 1.macs2/
+  854  l
+  855  ls
+  856  ll
+  857  head 13.Sin3A-A.1_summits.bed 
+  858  pwd
+  859  sort -h
+  860  sort 
+  861  sort --help
+  862  ll
+  863  sort -k5nr,5 13.Sin3A-A.1_summits.bed > 3.Sin3A-A.sorted_summits.bed
+  864  head 3.Sin3A-A.sorted_summits.bed 
+  865  awk '{print $0"\t+"}' 3.Sin3A-A.sorted_summits.bed 3.Sin3A-A.sorted_summits2.bed 
+  866  awk '{print $0"\t+"}' 3.Sin3A-A.sorted_summits.bed > 3.Sin3A-A.sorted_summits2.bed 
+  867  cd ../..
+  868  ls
+  869  cd 2.deeptools/
+  870  ll
+  871  cd 5.bamCompare/
+  872  pwd
+  873  ll
+  874  cd ../..
+  875  cd 3.findPeaks/
+  876  sl
+  877  cd 1.macs2/
+  878  ll
+  879  bamCompare 
+  880  ll
+  881  ls
+  882  ll
+  883  head 12.Tet1-N.1_peaks.narrowPeak 
+  884  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 -wao | less 
+  885  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 -wao | wc -l
+  886  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 -wo | wc -l
+  887  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 | wc -l
+  888  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 | less
+  889  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 | head
+  890  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 -wo | head
+  891  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 > 12-13.intersect.narrowPeak
+  892  cd ../2.annotatePeaks/
+  893  annotatePeaks.pl ../1.macs2/12-13.intersect.narrowPeak mm9 > 12-13.intersect_peaks.txt &
+  894  ann_peaks=12-13.intersect_peaks.txt
+  895  awk -F "\t" '$10>=-1500&&$10<=500{print $16}' $ann_peaks | wc -l
+  896  awk -F "\t" '$10>=-1500&&$10<=500{print $16}' $ann_peaks | sort | uniq -c | wc -l
+  897  awk -F "\t" '$10>=-1500&&$10<=500&&$19!="ncRNA"{print $16}' $ann_peaks | sort | uniq -c | wc -l
+  898  awk -F "\t" '$10>=-1500&&$10<=500&&$19=="protein-coding"{print $16}' $ann_peaks | sort | uniq -c | wc -l
+  899  awk -F "\t" '$10>=-1500&&$10<=500&&$19=="protein-coding"{print $16}' $ann_peaks | sort | uniq > 12-13.list
+  900  grep Lefty1 $ann_peaks 
+  901  grep Lefty1 12-13.list 
+  902   bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 -e  | wc -l
+  903  cd ../1.macs2/
+  904   bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 -e  | wc -l
+  905  bedtools intersect -a 12.Tet1-N.1_peaks.narrowPeak -b 13.Sin3A-A.1_peaks.narrowPeak -r -f 0.5 -e > 12-13.intersect.narrowPeak
+  906  cd ../2.annotatePeaks/
+  907  annotatePeaks.pl ../1.macs2/12-13.intersect.narrowPeak mm9 > 12-13.intersect_peaks.txt &
+  908  3
+  909  ll
+  910  ann_peaks=12-13.intersect_peaks.txt
+  911  awk -F "\t" '$10>=-1500&&$10<=500{print $16}' $ann_peaks | wc -l
+  912  awk -F "\t" '$10>=-1500&&$10<=500{print $16}' $ann_peaks | sort | uniq -c | wc -l
+  913  awk -F "\t" '$10>=-1500&&$10<=500&&$19!="ncRNA"{print $16}' $ann_peaks | sort | uniq -c | wc -l
+  914  awk -F "\t" '$10>=-1500&&$10<=500&&$19=="protein-coding"{print $16}' $ann_peaks | sort | uniq -c | wc -l
+  915  awk -F "\t" '$10>=-1500&&$10<=500&&$19=="protein-coding"{print $16}' $ann_peaks | sort | uniq > 12-13.list
+  916  grep Lefty1 $ann_peaks 
+  917  grep Ptch1 $ann_peaks 
+  918  awk -F "\t" '$10>=-1500&&$10<=500&&$19=="protein-coding"{print $14}' $ann_peaks | sort | uniq > 12-13.refseq
+  919  wc -l 12-13.refseq 
+  920  pwd
+  921  cd workspace/4.sin3a/
+  922  ls
+  923  cd 2.deeptools/
+  924  ls
+  925  ls 3.plotCoverage/
+  926  ls ../3.findPeaks/
+  927  ls ../3.findPeaks/2.annotatePeaks/
+  928  head ../3.findPeaks/2.annotatePeaks/mm9.bed 
+  929  cd ../3.findPeaks/2.annotatePeaks/
+  930  mv mm9.bed mm9.cgi.bed
+  931  ll
+  932  awk '{print $3-$2}' mm9.cgi.bed |less
+  933  pwd
+  934  computeMatrix scale-regions
+  935  computeMatrix scale-regions -h
+  936  ll
+  937  awk '{a+=$3-$2;b+=1} END{print a/b}' mm9.cgi.bed
+  938  cd ../..
+  939  ls
+  940  cd 4.microarray/
+  941  ls
+  942  cd 0.data/
+  943  ls
+  944  head nor_data.txt 
+  945  ll
+  946  head fc.tab 
+  947  history |grep fc.tab
+  948  head fc.tab 
+  949  awk '$2>=1{a+=1,print $1 >> "upregulate.list"} $2<=-1{b+=1, print $1 >> "de.list"} END{print a,b}' fc.tab 
+  950  awk '$2>=1{a+=1;print $1 >> "upregulate.list"} $2<=-1{b+=1; print $1 >> "downregulate.list"} END{print a,b}' fc.tab 
+  951  awk -v OFS="\\\" '{print $1,$2}' unregulate.list|less
+  952  awk -v OFS="\\\" '{print $1,$2}' upregulate.list|less
+  953  awk -v OFS="\\\\\\" '{print $1,$2}' upregulate.list|less
+  954  awk -v FS="\\\\\\" '{print $1,$2}' upregulate.list|less
+  955  awk -v FS="///" '{print $1,$2}' upregulate.list|less
+  956  awk -v FS="///" '{print $1"\n"$2}' upregulate.list|less
+  957  awk -v FS="///" 'NF==2{print $1"\n"$2} NF==1{print $1}' upregulate.list|less
+  958  awk -v FS="///" 'NF==2{print $1"\n"$2} NF==1{print $1}' upregulate.list> up.list
+  959  awk -v FS="///" 'NF==2{print $1"\n"$2} NF==1{print $1}' downregulate.list> down.list
+  960  sort up.list |uniq | wc -l
+  961  awk -v FS="///" 'NF==2{print $1"\n"$2} NF==1{print $1}' downregulate.list | sort | uniq > down.list 
+  962  awk -v FS="///" 'NF==2{print $1"\n"$2} NF==1{print $1}' upregulate.list | sort | uniq > up.list
+  963  wc -l *list
+  964  grep Lefty fc.tab 
+  965  ls
+  966  grep Lefty nor_data.txt 
+  967  grep Lefty2 nor_data.txt 
+  968  awk -v FS="\t" '($12=="P"||$8=="P")&&$14!=""&&($6>8||$2>8){print $14,$6-$2}' nor_data.txt > fc.tab
+  969  awk '$2>=1{a+=1;print $1 >> "upregulate.list"} $2<=-1{b+=1; print $1 >> "downregulate.list"} END{print a,b}' fc.tab 
+  970   awk -v FS="///" 'NF==2{print $1"\n"$2} NF==1{print $1}' downregulate.list | sort | uniq > down.list 
+  971  awk -v FS="///" 'NF==2{print $1"\n"$2} NF==1{print $1}' upregulate.list | sort | uniq > up.list
+  972  wc -l up.list down.list 
+  973  grep Lefty fc.tab 
+  974  top
+  975  cd workspace/4.sin3a/
+  976  ls
+  977  cd 2.deeptools/
+  978  ls
+  979  top
+  980  ls
+  981  mkdir 13.cgi_center
+  982  ll
+  983  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  984  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/13.cgi_center
+  985  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw  -R /home/qszhu/workspace/4.sin3a/3.findPeaks/2.annotatePeaks/mm9.cgi.bed -a 3000 -b 3000 --referencePoint center --sortRegions descend --sortUsing mean --sortUsingSamples 3 --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_summits.bamCompare.gz -p 32; plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "cpg island" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center; plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "sort by 5hmC" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center) &
+  986  ltgb ghhbbbbhhhhhhhyi;'
+  987  ltgb ghhbbbbhhhhhhhyi;'
+  988  mkdri 14.cgi_region
+  989  mkdir 14.cgi_region
+  990  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  991  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/14.cgi_region
+  992  (computeMatrix scale-regions -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw -R /home/qszhu/workspace/4.sin3a/3.findPeaks/2.annotatePeaks/mm9.cgi.bed -m 655 --sortRegions descend --sortUsing mean --sortUsingSamples 3 --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_summits.bamCompare.gz -p 32; plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "cpg island" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --startLabel start --endLabel end ; plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "sort by 5hmC" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --startLabel start --endLabel end ) &
+  993  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+  994  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/14.cgi_region
+  995  (computeMatrix scale-regions -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw -R /home/qszhu/workspace/4.sin3a/3.findPeaks/2.annotatePeaks/mm9.cgi.bed -m 660 --sortRegions descend --sortUsing mean --sortUsingSamples 3 --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_summits.bamCompare.gz -p 32; plotProfile -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "cpg island" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --startLabel start --endLabel end ; plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "sort by 5hmC" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --startLabel start --endLabel end ) &
+  996  ls
+  997  plotHeatmap -m $wdir/1.sorted_summits.bamCompare.gz -out $wdir/1.sorted_summits.heatmap.bamCompare.pdf --dpi 720 --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --startLabel start --endLabel end --colorList 'white,blue' --kmeans 4 
+  998  who
+  999  top
+ 1000  ls
+ 1001  cd workspace/4.sin3a/
+ 1002  ls
+ 1003  cd 2.deeptools/
+ 1004  ls
+ 1005  ll
+ 1006  history
+ 1007  mkdir 15.co-loca_tet1_peaks
+ 1008  bamCompare_dir=/home/qszhu/workspace/4.sin3a/2.deeptools/51.bamCompare.subtract
+ 1009  wdir=/home/qszhu/workspace/4.sin3a/2.deeptools/15.co-loca_tet1_peaks
+ 1010  (computeMatrix reference-point -S $bamCompare_dir/12.Tet1-N.bw  $bamCompare_dir/13.Sin3A-A.bw $bamCompare_dir/21.5hmC.bw  $bamCompare_dir/22.5mC.bw -R /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/intersect/12.intersect.wa.narrowPeak /home/qszhu/workspace/4.sin3a/3.findPeaks/1.macs2/intersect/12.intersect.v.narrowPeak -a 3000 -b 3000 --sortRegions descend --sortUsing mean --sortUsingSamples 3 --referencePoint center --outFileSortedRegions $wdir/1.sorted_heatmap.bed -o $wdir/1.sorted_centers.bamCompare.gz -p 32; plotProfile -m $wdir/1.sorted_centers.bamCompare.gz -out $wdir/1.sorted_centers.bamCompare.pdf --perGroup --dpi 720 --regionsLabel "co-localization" "other" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center; plotHeatmap -m $wdir/1.sorted_centers.bamCompare.gz -out $wdir/1.sorted_centers.heatmap.bamCompare.pdf --dpi 720 --regionsLabel "co-localization" "other" --samplesLabel Tet1-N Sin3A-A 5hmC 5mC --refPointLabel center --colorList 'white,blue' -T intersect_peaks; )&
+ 1011  ls
+ 1012  history > history.txt

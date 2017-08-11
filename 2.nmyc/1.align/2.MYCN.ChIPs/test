@@ -1,0 +1,63 @@
+Script started on Fri 09 Jun 2017 08:08:29 PM CST
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[?1034h[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ ls
+0001.sorted.bam      0003.sorted.bam.bai  0005.sorted.sam      0011.sorted.bam      0014.sorted.bam.bai  0101.sorted.bam      0104.sorted.bam.bai  0111.sorted.bam      0114.sorted.bam.bai  [0m[01;34m2.range300[0m/
+0001.sorted.bam.bai  0003.sorted.sam      0006.sorted.bam      0011.sorted.bam.bai  0015.sorted.bam      0101.sorted.bam.bai  0105.sorted.bam      0111.sorted.bam.bai  0115.sorted.bam      [01;34m3.range300_sams[0m/
+0001.sorted.sam      0004.sorted.bam      0006.sorted.bam.bai  0012.sorted.bam      0015.sorted.bam.bai  0102.sorted.bam      0105.sorted.bam.bai  0112.sorted.bam      0115.sorted.bam.bai  [01;34m4.tdfs[0m/
+0002.sorted.bam      0004.sorted.bam.bai  0006.sorted.sam      0012.sorted.bam.bai  0016.sorted.bam      0102.sorted.bam.bai  0106.sorted.bam      0112.sorted.bam.bai  0116.sorted.bam      [01;34m5.test_rmdup[0m/
+0002.sorted.bam.bai  0004.sorted.sam      0007.sorted.bam      0013.sorted.bam      0016.sorted.bam.bai  0103.sorted.bam      0106.sorted.bam.bai  0113.sorted.bam      0116.sorted.bam.bai  igv.log
+0002.sorted.sam      0005.sorted.bam      0007.sorted.bam.bai  0013.sorted.bam.bai  0017.sorted.bam      0103.sorted.bam.bai  0107.sorted.bam      0113.sorted.bam.bai  0117.sorted.bam      run.log
+0003.sorted.bam      0005.sorted.bam.bai  0007.sorted.sam      0014.sorted.bam      0017.sorted.bam.bai  0104.sorted.bam      0107.sorted.bam.bai  0114.sorted.bam      0117.sorted.bam.bai  test
+[m]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ cat test 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ for i in *log [K; do echo [K[K[K[K[Ka[Kls [K[K[Kecho $i;done
+igv.log
+run.log
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ ls
+0001.sorted.bam      0003.sorted.bam.bai  0005.sorted.sam      0011.sorted.bam      0014.sorted.bam.bai  0101.sorted.bam      0104.sorted.bam.bai  0111.sorted.bam      0114.sorted.bam.bai  [0m[01;34m2.range300[0m/
+0001.sorted.bam.bai  0003.sorted.sam      0006.sorted.bam      0011.sorted.bam.bai  0015.sorted.bam      0101.sorted.bam.bai  0105.sorted.bam      0111.sorted.bam.bai  0115.sorted.bam      [01;34m3.range300_sams[0m/
+0001.sorted.sam      0004.sorted.bam      0006.sorted.bam.bai  0012.sorted.bam      0015.sorted.bam.bai  0102.sorted.bam      0105.sorted.bam.bai  0112.sorted.bam      0115.sorted.bam.bai  [01;34m4.tdfs[0m/
+0002.sorted.bam      0004.sorted.bam.bai  0006.sorted.sam      0012.sorted.bam.bai  0016.sorted.bam      0102.sorted.bam.bai  0106.sorted.bam      0112.sorted.bam.bai  0116.sorted.bam      [01;34m5.test_rmdup[0m/
+0002.sorted.bam.bai  0004.sorted.sam      0007.sorted.bam      0013.sorted.bam      0016.sorted.bam.bai  0103.sorted.bam      0106.sorted.bam.bai  0113.sorted.bam      0116.sorted.bam.bai  igv.log
+0002.sorted.sam      0005.sorted.bam      0007.sorted.bam.bai  0013.sorted.bam.bai  0017.sorted.bam      0103.sorted.bam.bai  0107.sorted.bam      0113.sorted.bam.bai  0117.sorted.bam      run.log
+0003.sorted.bam      0005.sorted.bam.bai  0007.sorted.sam      0014.sorted.bam      0017.sorted.bam.bai  0104.sorted.bam      0107.sorted.bam.bai  0114.sorted.bam      0117.sorted.bam.bai  test
+[m]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ les[K[Ks[Kess test
+[?1049h[?1h=[K[7mtest (END) [27m[K[K[?1l>[?1049l]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ exit
+
+Script done on Fri 09 Jun 2017 08:12:45 PM CST
+hIPs]$ cat test 
+Script started on Fri 09 Jun 2017 08:08:29 PM CST
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[?1034h[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ ls
+0001.sorted.bam      0003.sorted.bam.bai  0005.sorted.sam      0011.sorted.bam      0014.sorted.bam.bai  0101.sorted.bam      0104.sorted.bam.bai  0111.sorted.bam      0114.sorted.bam.bai  [0m[01;34m2.range300[0m/
+0001.sorted.bam.bai  0003.sorted.sam      0006.sorted.bam      0011.sorted.bam.bai  0015.sorted.bam      0101.sorted.bam.bai  0105.sorted.bam      0111.sorted.bam.bai  0115.sorted.bam      [01;34m3.range300_sams[0m/
+0001.sorted.sam      0004.sorted.bam      0006.sorted.bam.bai  0012.sorted.bam      0015.sorted.bam.bai  0102.sorted.bam      0105.sorted.bam.bai  0112.sorted.bam      0115.sorted.bam.bai  [01;34m4.tdfs[0m/
+0002.sorted.bam      0004.sorted.bam.bai  0006.sorted.sam      0012.sorted.bam.bai  0016.sorted.bam      0102.sorted.bam.bai  0106.sorted.bam      0112.sorted.bam.bai  0116.sorted.bam      [01;34m5.test_rmdup[0m/
+0002.sorted.bam.bai  0004.sorted.sam      0007.sorted.bam      0013.sorted.bam      0016.sorted.bam.bai  0103.sorted.bam      0106.sorted.bam.bai  0113.sorted.bam      0116.sorted.bam.bai  igv.log
+0002.sorted.sam      0005.sorted.bam      0007.sorted.bam.bai  0013.sorted.bam.bai  0017.sorted.bam      0103.sorted.bam.bai  0107.sorted.bam      0113.sorted.bam.bai  0117.sorted.bam      run.log
+0003.sorted.bam      0005.sorted.bam.bai  0007.sorted.sam      0014.sorted.bam      0017.sorted.bam.bai  0104.sorted.bam      0107.sorted.bam.bai  0114.sorted.bam      0117.sorted.bam.bai  test
+[m]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ cat test 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ for i in *log [K; do echo [K[K[K[K[Ka[Kls [K[K[Kecho $i;done
+igv.log
+run.log
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ 
+]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ ls
+0001.sorted.bam      0003.sorted.bam.bai  0005.sorted.sam      0011.sorted.bam      0014.sorted.bam.bai  0101.sorted.bam      0104.sorted.bam.bai  0111.sorted.bam      0114.sorted.bam.bai  [0m[01;34m2.range300[0m/
+0001.sorted.bam.bai  0003.sorted.sam      0006.sorted.bam      0011.sorted.bam.bai  0015.sorted.bam      0101.sorted.bam.bai  0105.sorted.bam      0111.sorted.bam.bai  0115.sorted.bam      [01;34m3.range300_sams[0m/
+0001.sorted.sam      0004.sorted.bam      0006.sorted.bam.bai  0012.sorted.bam      0015.sorted.bam.bai  0102.sorted.bam      0105.sorted.bam.bai  0112.sorted.bam      0115.sorted.bam.bai  [01;34m4.tdfs[0m/
+0002.sorted.bam      0004.sorted.bam.bai  0006.sorted.sam      0012.sorted.bam.bai  0016.sorted.bam      0102.sorted.bam.bai  0106.sorted.bam      0112.sorted.bam.bai  0116.sorted.bam      [01;34m5.test_rmdup[0m/
+0002.sorted.bam.bai  0004.sorted.sam      0007.sorted.bam      0013.sorted.bam      0016.sorted.bam.bai  0103.sorted.bam      0106.sorted.bam.bai  0113.sorted.bam      0116.sorted.bam.bai  igv.log
+0002.sorted.sam      0005.sorted.bam      0007.sorted.bam.bai  0013.sorted.bam.bai  0017.sorted.bam      0103.sorted.bam.bai  0107.sorted.bam      0113.sorted.bam.bai  0117.sorted.bam      run.log
+0003.sorted.bam      0005.sorted.bam.bai  0007.sorted.sam      0014.sorted.bam      0017.sorted.bam.bai  0104.sorted.bam      0107.sorted.bam.bai  0114.sorted.bam      0117.sorted.bam.bai  test
+[m]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ les[K[Ks[Kess test
+[?1049h[?1h=[K[7mtest (END) [27m[K[K[?1l>[?1049l]0]0;qszhu@guru:~/workspace/2.nmyc/1.align/2.MYCN.ChIPs[qszhu@guru 2.MYCN.ChIPs]$ exit
+
+Script done on Fri 09 Jun 2017 08:13:17 PM CST

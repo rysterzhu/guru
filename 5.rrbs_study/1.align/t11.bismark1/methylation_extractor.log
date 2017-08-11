@@ -1,0 +1,671 @@
+
+ *** Bismark methylation extractor version v0.18.0 ***
+
+Setting option '--no_overlap' since this is (normally) the right thing to do for paired-end data
+
+Setting core usage to single-threaded (default). Consider using --multicore <int> to speed up the extraction process.
+
+Summarising Bismark methylation extractor parameters:
+===============================================================
+Bismark paired-end SAM format specified (default)
+Number of cores to be used: 1
+Strand-specific outputs will be skipped. Separate output files for cytosines in CpG, CHG and CHH context will be generated
+Output will be written to the current directory ('/home/qszhu/workspace/5.rrbs_study/1.align/t11.bismark1')
+
+
+Summarising bedGraph parameters:
+===============================================================
+Generating additional output in bedGraph and coverage format
+bedGraph format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage>
+coverage format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage> <count methylated> <count non-methylated>
+
+Using a cutoff of 1 read(s) to report cytosine positions
+Reporting and sorting cytosine methylation information in CpG context only (default)
+The bedGraph UNIX sort command will use the following memory setting:	'2G'. Temporary directory used for sorting is the output directory
+
+Checking file >>t11.R1_bismark_bt2_pe.bam<< for signs of file truncation...
+
+
+Now testing Bismark result file t11.R1_bismark_bt2_pe.bam for positional sorting (which would be bad...)	...passed!
+Writing result file containing methylation information for C in CpG context to CpG_context_t11.R1_bismark_bt2_pe.txt
+Writing result file containing methylation information for C in CHG context to CHG_context_t11.R1_bismark_bt2_pe.txt
+Writing result file containing methylation information for C in CHH context to CHH_context_t11.R1_bismark_bt2_pe.txt
+Now reading in Bismark result file t11.R1_bismark_bt2_pe.bam
+skipping SAM header line:	@HD	VN:1.0	SO:unsorted
+skipping SAM header line:	@SQ	SN:chr10	LN:129993255
+skipping SAM header line:	@SQ	SN:chr11	LN:121843856
+skipping SAM header line:	@SQ	SN:chr12	LN:121257530
+skipping SAM header line:	@SQ	SN:chr13	LN:120284312
+skipping SAM header line:	@SQ	SN:chr14	LN:125194864
+skipping SAM header line:	@SQ	SN:chr15	LN:103494974
+skipping SAM header line:	@SQ	SN:chr16	LN:98319150
+skipping SAM header line:	@SQ	SN:chr17	LN:95272651
+skipping SAM header line:	@SQ	SN:chr18	LN:90772031
+skipping SAM header line:	@SQ	SN:chr19	LN:61342430
+skipping SAM header line:	@SQ	SN:chr1	LN:197195432
+skipping SAM header line:	@SQ	SN:chr2	LN:181748087
+skipping SAM header line:	@SQ	SN:chr3	LN:159599783
+skipping SAM header line:	@SQ	SN:chr4	LN:155630120
+skipping SAM header line:	@SQ	SN:chr5	LN:152537259
+skipping SAM header line:	@SQ	SN:chr6	LN:149517037
+skipping SAM header line:	@SQ	SN:chr7	LN:152524553
+skipping SAM header line:	@SQ	SN:chr8	LN:131738871
+skipping SAM header line:	@SQ	SN:chr9	LN:124076172
+skipping SAM header line:	@SQ	SN:chrM	LN:16299
+skipping SAM header line:	@SQ	SN:chrX	LN:166650296
+skipping SAM header line:	@SQ	SN:chrY	LN:15902555
+skipping SAM header line:	@PG	ID:Bismark	VN:v0.18.1_dev	CL:"bismark -N 1 /home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/ -1 /home/qszhu/workspace/5.rrbs_study/0.data/t11.R1.fastq.gz -2 /home/qszhu/workspace/5.rrbs_study/0.data/t11.R2.fastq.gz -o t11.bismark1"
+Processed lines: 500000
+Processed lines: 1000000
+Processed lines: 1500000
+Processed lines: 2000000
+Processed lines: 2500000
+Processed lines: 3000000
+Processed lines: 3500000
+Processed lines: 4000000
+Processed lines: 4500000
+Processed lines: 5000000
+Processed lines: 5500000
+
+Processed 5991297 lines in total
+Total number of methylation call strings processed: 11982594
+
+Final Cytosine Methylation Report
+=================================
+Total number of C's analysed:	229084849
+
+Total methylated C's in CpG context:	3619534
+Total methylated C's in CHG context:	649632
+Total methylated C's in CHH context:	1063566
+
+Total C to T conversions in CpG context:	42589189
+Total C to T conversions in CHG context:	69022117
+Total C to T conversions in CHH context:	112140811
+
+C methylated in CpG context:	7.8%
+C methylated in CHG context:	0.9%
+C methylated in CHH context:	0.9%
+
+
+Determining maximum read lengths for M-Bias plots
+Maximum read length of Read 1: 125
+Maximum read length of Read 2: 125
+
+Perl module GD::Graph::lines is not installed, skipping drawing M-bias plots (only writing out M-bias plot table)
+Determining maximum read lengths for M-Bias plots
+Maximum read length of Read 1: 125
+Maximum read length of Read 2: 125
+
+Perl module GD::Graph::lines is not installed, skipping drawing M-bias plots (only writing out M-bias plot table)
+Deleting unused files ...
+
+CpG_context_t11.R1_bismark_bt2_pe.txt contains data ->	kept
+CHG_context_t11.R1_bismark_bt2_pe.txt contains data ->	kept
+CHH_context_t11.R1_bismark_bt2_pe.txt contains data ->	kept
+
+
+Using these input files: CpG_context_t11.R1_bismark_bt2_pe.txt CHG_context_t11.R1_bismark_bt2_pe.txt CHH_context_t11.R1_bismark_bt2_pe.txt
+
+Summary of parameters for bismark2bedGraph conversion:
+======================================================
+bedGraph output:		t11.R1_bismark_bt2_pe.bedGraph.gz
+output directory:		><
+remove whitespaces:		no
+CX context:			no (CpG context only, default)
+No-header selected:		no
+Sorting method:			Unix sort-based (smaller memory footprint, but slower)
+Sort buffer size:		2G
+Coverage threshold:		1
+=============================================================================
+Methylation information will now be written into a bedGraph and coverage file
+=============================================================================
+
+Using the following files as Input:
+/home/qszhu/workspace/5.rrbs_study/1.align/t11.bismark1/CpG_context_t11.R1_bismark_bt2_pe.txt
+
+Writing bedGraph to file: t11.R1_bismark_bt2_pe.bedGraph.gz
+Also writing out a coverage file including counts methylated and unmethylated residues to file: t11.R1_bismark_bt2_pe.bismark.cov.gz
+
+Now writing methylation information for file >>CpG_context_t11.R1_bismark_bt2_pe.txt<< to individual files for each chromosome
+Finished writing out individual chromosome files for CpG_context_t11.R1_bismark_bt2_pe.txt
+
+Collecting temporary chromosome file information... Processing the following input file(s):
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr6.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr10.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr14.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr8.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr5.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr1.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr17.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr13.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr9.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr19.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr15.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr3.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr12.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr2.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr4.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchrX.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr16.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr11.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr18.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr7.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchrY.methXtractor.temp
+CpG_context_t11.R1_bismark_bt2_pe.txt.chrchrM.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr6.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr6.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr10.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr10.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr14.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr14.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr8.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr8.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr5.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr5.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr1.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr1.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr17.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr17.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr13.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr13.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr9.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr9.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr19.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr19.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr15.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr15.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr3.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr3.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr12.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr12.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr2.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr2.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr4.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr4.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchrX.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchrX.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr16.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr16.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr11.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr11.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr18.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr18.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr7.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchr7.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchrY.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchrY.methXtractor.temp
+
+Sorting input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchrM.methXtractor.temp by positions (using -S of 2G)
+Successfully deleted the temporary input file CpG_context_t11.R1_bismark_bt2_pe.txt.chrchrM.methXtractor.temp
+
+Finished BedGraph conversion ...
+
+
+ *** Bismark methylation extractor version v0.18.0 ***
+
+Trying to determine the type of mapping from the SAM header line of file sample_bismark_bt2.bam
+[E::hts_open_format] fail to open file 'sample_bismark_bt2.bam'
+samtools view: failed to open "sample_bismark_bt2.bam" for reading: No such file or directory
+
+Setting core usage to single-threaded (default). Consider using --multicore <int> to speed up the extraction process.
+
+Summarising Bismark methylation extractor parameters:
+===============================================================
+Number of cores to be used: 1
+Output path specified as: extractor2/
+
+
+Summarising bedGraph parameters:
+===============================================================
+Generating additional output in bedGraph and coverage format
+bedGraph format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage>
+coverage format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage> <count methylated> <count non-methylated>
+
+Using a cutoff of 1 read(s) to report cytosine positions
+Reporting and sorting cytosine methylation information in CpG context only (default)
+The bedGraph UNIX sort command will use the following memory setting:	'10G'. Temporary directory used for sorting is the output directory
+
+
+Summarising genome-wide cytosine methylation report parameters:
+===============================================================
+Generating comprehensive genome-wide cytosine report
+(output format: <Chromosome> <Position> <Strand> <count methylated> <count non-methylated>  <C-context>  <trinucleotide context> )
+Reporting cytosine methylation in CpG context only (default)
+Using 1-based genomic coordinates (default)
+The specified genome folder does not appear to be a directory. Please respecify and try again!
+
+
+ *** Bismark methylation extractor version v0.18.0 ***
+
+Trying to determine the type of mapping from the SAM header line of file t11.R1_bismark_bt2_pe.bam
+Treating file(s) as paired-end data (as extracted from @PG line)
+
+Setting option '--no_overlap' since this is (normally) the right thing to do for paired-end data
+
+
+Setting core usage to single-threaded (default). Consider using --multicore <int> to speed up the extraction process.
+
+Summarising Bismark methylation extractor parameters:
+===============================================================
+Bismark paired-end SAM format specified (default)
+Number of cores to be used: 1
+Output path specified as: extractor2/
+
+
+Summarising bedGraph parameters:
+===============================================================
+Generating additional output in bedGraph and coverage format
+bedGraph format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage>
+coverage format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage> <count methylated> <count non-methylated>
+
+Using a cutoff of 1 read(s) to report cytosine positions
+Reporting and sorting cytosine methylation information in CpG context only (default)
+The bedGraph UNIX sort command will use the following memory setting:	'10G'. Temporary directory used for sorting is the output directory
+
+
+Summarising genome-wide cytosine methylation report parameters:
+===============================================================
+Generating comprehensive genome-wide cytosine report
+(output format: <Chromosome> <Position> <Strand> <count methylated> <count non-methylated>  <C-context>  <trinucleotide context> )
+Reporting cytosine methylation in CpG context only (default)
+Using 1-based genomic coordinates (default)
+The specified genome folder does not appear to be a directory. Please respecify and try again!
+
+
+ *** Bismark methylation extractor version v0.18.0 ***
+
+Trying to determine the type of mapping from the SAM header line of file t11.R1_bismark_bt2_pe.bam
+Treating file(s) as paired-end data (as extracted from @PG line)
+
+Setting option '--no_overlap' since this is (normally) the right thing to do for paired-end data
+
+
+Setting core usage to single-threaded (default). Consider using --multicore <int> to speed up the extraction process.
+
+Summarising Bismark methylation extractor parameters:
+===============================================================
+Bismark paired-end SAM format specified (default)
+Number of cores to be used: 1
+Output path specified as: extractor2/
+
+
+Summarising bedGraph parameters:
+===============================================================
+Generating additional output in bedGraph and coverage format
+bedGraph format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage>
+coverage format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage> <count methylated> <count non-methylated>
+
+Using a cutoff of 1 read(s) to report cytosine positions
+Reporting and sorting cytosine methylation information in CpG context only (default)
+The bedGraph UNIX sort command will use the following memory setting:	'10G'. Temporary directory used for sorting is the output directory
+
+
+Summarising genome-wide cytosine methylation report parameters:
+===============================================================
+Generating comprehensive genome-wide cytosine report
+(output format: <Chromosome> <Position> <Strand> <count methylated> <count non-methylated>  <C-context>  <trinucleotide context> )
+Reporting cytosine methylation in CpG context only (default)
+Using 1-based genomic coordinates (default)
+Genome folder was specified as /home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/
+
+Checking file >>t11.R1_bismark_bt2_pe.bam<< for signs of file truncation...
+
+
+Now testing Bismark result file t11.R1_bismark_bt2_pe.bam for positional sorting (which would be bad...)	...passed!
+Failed to write to file extractor2/t11.R1_bismark_bt2_pe_splitting_report.txt No such file or directory
+
+ *** Bismark methylation extractor version v0.18.0 ***
+
+Trying to determine the type of mapping from the SAM header line of file t11.R1_bismark_bt2_pe.bam
+Treating file(s) as paired-end data (as extracted from @PG line)
+
+Setting option '--no_overlap' since this is (normally) the right thing to do for paired-end data
+
+
+Setting core usage to single-threaded (default). Consider using --multicore <int> to speed up the extraction process.
+
+Summarising Bismark methylation extractor parameters:
+===============================================================
+Bismark paired-end SAM format specified (default)
+Number of cores to be used: 1
+Output path specified as: extractor2/
+
+
+Summarising bedGraph parameters:
+===============================================================
+Generating additional output in bedGraph and coverage format
+bedGraph format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage>
+coverage format:	<Chromosome> <Start Position> <End Position> <Methylation Percentage> <count methylated> <count non-methylated>
+
+Using a cutoff of 1 read(s) to report cytosine positions
+Reporting and sorting cytosine methylation information in CpG context only (default)
+The bedGraph UNIX sort command will use the following memory setting:	'10G'. Temporary directory used for sorting is the output directory
+
+
+Summarising genome-wide cytosine methylation report parameters:
+===============================================================
+Generating comprehensive genome-wide cytosine report
+(output format: <Chromosome> <Position> <Strand> <count methylated> <count non-methylated>  <C-context>  <trinucleotide context> )
+Reporting cytosine methylation in CpG context only (default)
+Using 1-based genomic coordinates (default)
+Genome folder was specified as /home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/
+
+Checking file >>t11.R1_bismark_bt2_pe.bam<< for signs of file truncation...
+
+
+Now testing Bismark result file t11.R1_bismark_bt2_pe.bam for positional sorting (which would be bad...)	...passed!
+Writing result file containing methylation information for C in CpG context from the original top strand to extractor2/CpG_OT_t11.R1_bismark_bt2_pe.txt.gz
+Writing result file containing methylation information for C in CpG context from the complementary to original top strand to extractor2/CpG_CTOT_t11.R1_bismark_bt2_pe.txt.gz
+Writing result file containing methylation information for C in CpG context from the complementary to original bottom strand to extractor2/CpG_CTOB_t11.R1_bismark_bt2_pe.txt.gz
+Writing result file containing methylation information for C in CpG context from the original bottom strand to extractor2/CpG_OB_t11.R1_bismark_bt2_pe.txt.gz
+
+Writing result file containing methylation information for C in CHG context from the original top strand to extractor2/CHG_OT_t11.R1_bismark_bt2_pe.txt.gz
+Writing result file containing methylation information for C in CHG context from the complementary to original top strand to extractor2/CHG_CTOT_t11.R1_bismark_bt2_pe.txt.gz
+Writing result file containing methylation information for C in CHG context from the complementary to original bottom strand to extractor2/CHG_CTOB_t11.R1_bismark_bt2_pe.txt.gz
+Writing result file containing methylation information for C in CHG context from the original bottom strand to extractor2/CHG_OB_t11.R1_bismark_bt2_pe.txt.gz
+
+Writing result file containing methylation information for C in CHH context from the original top strand to extractor2/CHH_OT_t11.R1_bismark_bt2_pe.txt.gz
+Writing result file containing methylation information for C in CHH context from the complementary to original top strand to extractor2/CHH_CTOT_t11.R1_bismark_bt2_pe.txt.gz
+Writing result file containing methylation information for C in CHH context from the complementary to original bottom strand to extractor2/CHH_CTOB_t11.R1_bismark_bt2_pe.txt.gz
+Writing result file containing methylation information for C in CHH context from the original bottom strand to extractor2/CHH_OB_t11.R1_bismark_bt2_pe.txt.gz
+
+Now reading in Bismark result file t11.R1_bismark_bt2_pe.bam
+skipping SAM header line:	@HD	VN:1.0	SO:unsorted
+skipping SAM header line:	@SQ	SN:chr10	LN:129993255
+skipping SAM header line:	@SQ	SN:chr11	LN:121843856
+skipping SAM header line:	@SQ	SN:chr12	LN:121257530
+skipping SAM header line:	@SQ	SN:chr13	LN:120284312
+skipping SAM header line:	@SQ	SN:chr14	LN:125194864
+skipping SAM header line:	@SQ	SN:chr15	LN:103494974
+skipping SAM header line:	@SQ	SN:chr16	LN:98319150
+skipping SAM header line:	@SQ	SN:chr17	LN:95272651
+skipping SAM header line:	@SQ	SN:chr18	LN:90772031
+skipping SAM header line:	@SQ	SN:chr19	LN:61342430
+skipping SAM header line:	@SQ	SN:chr1	LN:197195432
+skipping SAM header line:	@SQ	SN:chr2	LN:181748087
+skipping SAM header line:	@SQ	SN:chr3	LN:159599783
+skipping SAM header line:	@SQ	SN:chr4	LN:155630120
+skipping SAM header line:	@SQ	SN:chr5	LN:152537259
+skipping SAM header line:	@SQ	SN:chr6	LN:149517037
+skipping SAM header line:	@SQ	SN:chr7	LN:152524553
+skipping SAM header line:	@SQ	SN:chr8	LN:131738871
+skipping SAM header line:	@SQ	SN:chr9	LN:124076172
+skipping SAM header line:	@SQ	SN:chrM	LN:16299
+skipping SAM header line:	@SQ	SN:chrX	LN:166650296
+skipping SAM header line:	@SQ	SN:chrY	LN:15902555
+skipping SAM header line:	@PG	ID:Bismark	VN:v0.18.1_dev	CL:"bismark -N 1 /home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/ -1 /home/qszhu/workspace/5.rrbs_study/0.data/t11.R1.fastq.gz -2 /home/qszhu/workspace/5.rrbs_study/0.data/t11.R2.fastq.gz -o t11.bismark1"
+Processed lines: 500000
+Processed lines: 1000000
+Processed lines: 1500000
+Processed lines: 2000000
+Processed lines: 2500000
+Processed lines: 3000000
+Processed lines: 3500000
+Processed lines: 4000000
+Processed lines: 4500000
+Processed lines: 5000000
+Processed lines: 5500000
+
+Processed 5991297 lines in total
+Total number of methylation call strings processed: 11982594
+
+Final Cytosine Methylation Report
+=================================
+Total number of C's analysed:	229084849
+
+Total methylated C's in CpG context:	3619534
+Total methylated C's in CHG context:	649632
+Total methylated C's in CHH context:	1063566
+
+Total C to T conversions in CpG context:	42589189
+Total C to T conversions in CHG context:	69022117
+Total C to T conversions in CHH context:	112140811
+
+C methylated in CpG context:	7.8%
+C methylated in CHG context:	0.9%
+C methylated in CHH context:	0.9%
+
+
+Determining maximum read lengths for M-Bias plots
+Maximum read length of Read 1: 125
+Maximum read length of Read 2: 125
+
+Perl module GD::Graph::lines is not installed, skipping drawing M-bias plots (only writing out M-bias plot table)
+Determining maximum read lengths for M-Bias plots
+Maximum read length of Read 1: 125
+Maximum read length of Read 2: 125
+
+Perl module GD::Graph::lines is not installed, skipping drawing M-bias plots (only writing out M-bias plot table)
+Deleting unused files ...
+
+extractor2/CpG_OT_t11.R1_bismark_bt2_pe.txt.gz contains data ->	kept
+extractor2/CpG_CTOT_t11.R1_bismark_bt2_pe.txt.gz was empty ->	deleted
+extractor2/CpG_CTOB_t11.R1_bismark_bt2_pe.txt.gz was empty ->	deleted
+extractor2/CpG_OB_t11.R1_bismark_bt2_pe.txt.gz contains data ->	kept
+extractor2/CHG_OT_t11.R1_bismark_bt2_pe.txt.gz contains data ->	kept
+extractor2/CHG_CTOT_t11.R1_bismark_bt2_pe.txt.gz was empty ->	deleted
+extractor2/CHG_CTOB_t11.R1_bismark_bt2_pe.txt.gz was empty ->	deleted
+extractor2/CHG_OB_t11.R1_bismark_bt2_pe.txt.gz contains data ->	kept
+extractor2/CHH_OT_t11.R1_bismark_bt2_pe.txt.gz contains data ->	kept
+extractor2/CHH_CTOT_t11.R1_bismark_bt2_pe.txt.gz was empty ->	deleted
+extractor2/CHH_CTOB_t11.R1_bismark_bt2_pe.txt.gz was empty ->	deleted
+extractor2/CHH_OB_t11.R1_bismark_bt2_pe.txt.gz contains data ->	kept
+
+
+Using these input files: extractor2/CpG_OT_t11.R1_bismark_bt2_pe.txt.gz extractor2/CpG_OB_t11.R1_bismark_bt2_pe.txt.gz extractor2/CHG_OT_t11.R1_bismark_bt2_pe.txt.gz extractor2/CHG_OB_t11.R1_bismark_bt2_pe.txt.gz extractor2/CHH_OT_t11.R1_bismark_bt2_pe.txt.gz extractor2/CHH_OB_t11.R1_bismark_bt2_pe.txt.gz
+
+Summary of parameters for bismark2bedGraph conversion:
+======================================================
+bedGraph output:		t11.R1_bismark_bt2_pe.bedGraph.gz
+output directory:		>/home/qszhu/workspace/5.rrbs_study/1.align/t11.bismark1/extractor2/<
+remove whitespaces:		no
+CX context:			no (CpG context only, default)
+No-header selected:		no
+Sorting method:			Unix sort-based (smaller memory footprint, but slower)
+Sort buffer size:		10G
+Coverage threshold:		1
+=============================================================================
+Methylation information will now be written into a bedGraph and coverage file
+=============================================================================
+
+Using the following files as Input:
+/home/qszhu/workspace/5.rrbs_study/1.align/t11.bismark1/extractor2/CpG_OT_t11.R1_bismark_bt2_pe.txt.gz	/home/qszhu/workspace/5.rrbs_study/1.align/t11.bismark1/extractor2/CpG_OB_t11.R1_bismark_bt2_pe.txt.gz
+
+Writing bedGraph to file: t11.R1_bismark_bt2_pe.bedGraph.gz
+Also writing out a coverage file including counts methylated and unmethylated residues to file: t11.R1_bismark_bt2_pe.bismark.cov.gz
+
+Changed directory to /home/qszhu/workspace/5.rrbs_study/1.align/t11.bismark1/extractor2/
+Now writing methylation information for file >>CpG_OT_t11.R1_bismark_bt2_pe.txt.gz<< to individual files for each chromosome
+Finished writing out individual chromosome files for CpG_OT_t11.R1_bismark_bt2_pe.txt.gz
+Now writing methylation information for file >>CpG_OB_t11.R1_bismark_bt2_pe.txt.gz<< to individual files for each chromosome
+Finished writing out individual chromosome files for CpG_OB_t11.R1_bismark_bt2_pe.txt.gz
+
+Collecting temporary chromosome file information... Processing the following input file(s):
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr10.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr14.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr8.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr1.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr17.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr12.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr2.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchrX.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr16.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr4.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr11.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr5.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr9.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr18.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr6.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr7.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr19.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr13.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr15.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr3.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchrY.methXtractor.temp
+CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchrM.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr10.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr10.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr14.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr14.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr8.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr8.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr1.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr1.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr17.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr17.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr12.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr12.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr2.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr2.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchrX.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchrX.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr16.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr16.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr4.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr4.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr11.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr11.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr5.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr5.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr9.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr9.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr18.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr18.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr6.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr6.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr7.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr7.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr19.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr19.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr13.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr13.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr15.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr15.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr3.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchr3.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchrY.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchrY.methXtractor.temp
+
+Sorting input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchrM.methXtractor.temp by positions (using -S of 10G)
+Successfully deleted the temporary input file CpG_OT_t11.R1_bismark_bt2_pe.txt.gz.chrchrM.methXtractor.temp
+
+Finished BedGraph conversion ...
+
+Summary of parameters for genome-wide cytosine report:
+==============================================================================
+Coverage infile:			t11.R1_bismark_bt2_pe.bismark.cov.gz
+Output directory:			>extractor2/<
+Parent directory:			>/home/qszhu/workspace/5.rrbs_study/1.align/t11.bismark1/<
+Genome directory:			>/home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/<
+CX context:				no (CpG context only, default)
+Genome coordinates used:		1-based (default)
+GZIP compression:			yes
+Split by chromosome:			no
+
+
+Now reading in and storing sequence information of the genome specified in: /home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/
+
+chr chr10 (129993255 bp)
+chr chr11 (121843856 bp)
+chr chr12 (121257530 bp)
+chr chr13 (120284312 bp)
+chr chr14 (125194864 bp)
+chr chr15 (103494974 bp)
+chr chr16 (98319150 bp)
+chr chr17 (95272651 bp)
+chr chr18 (90772031 bp)
+chr chr19 (61342430 bp)
+chr chr1 (197195432 bp)
+chr chr2 (181748087 bp)
+chr chr3 (159599783 bp)
+chr chr4 (155630120 bp)
+chr chr5 (152537259 bp)
+chr chr6 (149517037 bp)
+chr chr7 (152524553 bp)
+chr chr8 (131738871 bp)
+chr chr9 (124076172 bp)
+chr chrM (16299 bp)
+chr chrX (166650296 bp)
+chr chrY (15902555 bp)
+
+Stored sequence information of 22 chromosomes/scaffolds in total
+
+==============================================================================
+Methylation information will now be written into a genome-wide cytosine report
+==============================================================================
+
+>>> Writing genome-wide cytosine report to: t11.R1_bismark_bt2_pe.CpG_report.txt.gz <<<
+
+Writing cytosine report for chromosome chr10 (stored 57833 different covered positions)
+Writing cytosine report for chromosome chr14 (stored 41902 different covered positions)
+Writing cytosine report for chromosome chr8 (stored 69286 different covered positions)
+Writing cytosine report for chromosome chr1 (stored 67575 different covered positions)
+Writing cytosine report for chromosome chr17 (stored 52877 different covered positions)
+Writing cytosine report for chromosome chr12 (stored 48469 different covered positions)
+Writing cytosine report for chromosome chr2 (stored 86241 different covered positions)
+Writing cytosine report for chromosome chrX (stored 40140 different covered positions)
+Writing cytosine report for chromosome chr16 (stored 34457 different covered positions)
+Writing cytosine report for chromosome chr4 (stored 81498 different covered positions)
+Writing cytosine report for chromosome chr11 (stored 81109 different covered positions)
+Writing cytosine report for chromosome chr5 (stored 79441 different covered positions)
+Writing cytosine report for chromosome chr9 (stored 58048 different covered positions)
+Writing cytosine report for chromosome chr18 (stored 33675 different covered positions)
+Writing cytosine report for chromosome chr6 (stored 55342 different covered positions)
+Writing cytosine report for chromosome chr7 (stored 77369 different covered positions)
+Writing cytosine report for chromosome chr19 (stored 33971 different covered positions)
+Writing cytosine report for chromosome chr13 (stored 45843 different covered positions)
+Writing cytosine report for chromosome chr15 (stored 49128 different covered positions)
+Writing cytosine report for chromosome chr3 (stored 53927 different covered positions)
+Writing cytosine report for chromosome chrY (stored 106 different covered positions)
+Writing cytosine report for last chromosome chrM (stored 177 different covered positions)
+Finished writing out cytosine report for covered chromosomes (processed 22 chromosomes/scaffolds in total)
+
+Now processing chromosomes that were not covered by any methylation calls in the coverage file...
+All chromosomes in the genome were covered by at least some reads. coverage2cytosine processing complete.
+
+
+
+Finished generating genome-wide cytosine report
+

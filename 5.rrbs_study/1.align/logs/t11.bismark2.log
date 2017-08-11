@@ -1,0 +1,145 @@
+Path to Bowtie 2 specified as: bowtie2
+Bowtie seems to be working fine (tested command 'bowtie2 --version' [2.2.9])
+Output format is BAM (default)
+Alignments will be written out in BAM format. Samtools found here: '/home/qszhu/anaconda2/bin/samtools'
+Reference genome folder provided is /home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/	(absolute path is '/home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/)'
+FastQ format assumed (by default)
+Attention: using more than 4 cores per alignment thread has been reported to have diminishing returns. If possible try to limit -p to a value of 4
+Each Bowtie 2 instance is going to be run with 32 threads. Please monitor performance closely and tune down if needed!
+
+Input files to be analysed (in current folder '/home/qszhu/workspace/5.rrbs_study/1.align'):
+/home/qszhu/workspace/5.rrbs_study/0.data/2.trim/t11.R1_val_1.fq.gz
+/home/qszhu/workspace/5.rrbs_study/0.data/2.trim/t11.R2_val_2.fq.gz
+Library is assumed to be strand-specific (directional), alignments to strands complementary to the original top or bottom strands will be ignored (i.e. not performed!)
+Output will be written into the directory: /home/qszhu/workspace/5.rrbs_study/1.align/t11.bismark2/
+Setting parallelization to single-threaded (default)
+
+Current working directory is: /home/qszhu/workspace/5.rrbs_study/1.align
+
+Now reading in and storing sequence information of the genome specified in: /home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/
+
+chr chr10 (129993255 bp)
+chr chr11 (121843856 bp)
+chr chr12 (121257530 bp)
+chr chr13 (120284312 bp)
+chr chr14 (125194864 bp)
+chr chr15 (103494974 bp)
+chr chr16 (98319150 bp)
+chr chr17 (95272651 bp)
+chr chr18 (90772031 bp)
+chr chr19 (61342430 bp)
+chr chr1 (197195432 bp)
+chr chr2 (181748087 bp)
+chr chr3 (159599783 bp)
+chr chr4 (155630120 bp)
+chr chr5 (152537259 bp)
+chr chr6 (149517037 bp)
+chr chr7 (152524553 bp)
+chr chr8 (131738871 bp)
+chr chr9 (124076172 bp)
+chr chrM (16299 bp)
+chr chrX (166650296 bp)
+chr chrY (15902555 bp)
+
+Single-core mode: setting pid to 1
+
+Paired-end alignments will be performed
+=======================================
+
+The provided filenames for paired-end alignments are /home/qszhu/workspace/5.rrbs_study/0.data/2.trim/t11.R1_val_1.fq.gz and /home/qszhu/workspace/5.rrbs_study/0.data/2.trim/t11.R2_val_2.fq.gz
+Input files are in FastQ format
+Writing a C -> T converted version of the input file t11.R1_val_1.fq.gz to t11.R1_val_1.fq.gz_C_to_T.fastq
+
+Created C -> T converted version of the FastQ file t11.R1_val_1.fq.gz (10439058 sequences in total)
+
+Writing a G -> A converted version of the input file t11.R2_val_2.fq.gz to t11.R2_val_2.fq.gz_G_to_A.fastq
+
+Created G -> A converted version of the FastQ file t11.R2_val_2.fq.gz (10439058 sequences in total)
+
+Input files are t11.R1_val_1.fq.gz_C_to_T.fastq and t11.R2_val_2.fq.gz_G_to_A.fastq (FastQ)
+Now running 2 instances of Bowtie 2 against the bisulfite genome of /home/share/Illumina_iGenome/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/ with the specified options: -q -N 1 --score-min L,0,-0.2 -p 32 --reorder --ignore-quals --no-mixed --no-discordant --dovetail --maxins 500
+
+Now starting a Bowtie 2 paired-end alignment for CTread1GAread2CTgenome (reading in sequences from t11.R1_val_1.fq.gz_C_to_T.fastq and t11.R2_val_2.fq.gz_G_to_A.fastq, with the options: -q -N 1 --score-min L,0,-0.2 -p 32 --reorder --ignore-quals --no-mixed --no-discordant --dovetail --maxins 500 --norc))
+Found first alignment:
+HISEQ:641:C8THKANXX:2:1101:1992:2491_1:N:0:ATCACG/1	99	chr11_CT_converted	13716354	1	119M	=	13716388	156	TGGGTTATTTTGTTAGTAGAGTTTTGTTTAATATTTGTAAGGGTTTATATGGGATTTTTTATGGGATTTTAAGATTTTTGGTGAGTGGATTATAGTGTTTGTTTTAATTTAATTGTGTG	BBBBBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBBFFFFFFFFFF<FBFFFF/<</FFFFF<<F<<<<FF<BFBF<FF<FFFFFFFF//BFF7<F//FBFB	AS:i:0	XS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:119	YS:i:0	YT:Z:CP
+HISEQ:641:C8THKANXX:2:1101:1992:2491_2:N:0:ATCACG/2	147	chr11_CT_converted	13716388	1	122M	=	13716354	-156	TTGTAAGGGTTTATATGGGATTTTTTATGGGATTTTAAGATTTTTGGTGAGTGGATTATAGTGTTTGTTTTAATTTAATTGTGTGGAATTTGAGATTGTGGTATATAGGGAAGTAGGTTATT	FF<FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBBB	AS:i:0	XS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:122	YS:i:0	YT:Z:CP
+Now starting a Bowtie 2 paired-end alignment for CTread1GAread2GAgenome (reading in sequences from t11.R1_val_1.fq.gz_C_to_T.fastq and t11.R2_val_2.fq.gz_G_to_A.fastq, with the options: -q -N 1 --score-min L,0,-0.2 -p 32 --reorder --ignore-quals --no-mixed --no-discordant --dovetail --maxins 500 --nofw))
+Found first alignment:
+HISEQ:641:C8THKANXX:2:1101:1992:2491_1:N:0:ATCACG/1	83	chr2_GA_converted	58740291	1	119M	=	58740254	-156	CACACAATTAAATTAAAACAAACACTATAATCCACTCACCAAAAATCTTAAAATCCCATAAAAAATCCCATATAAACCCTTACAAATATTAAACAAAACTCTACTAACAAAATAACCCA	BFBF//F<7FFB//FFFFFFFF<FF<FBFB<FF<<<<F<<FFFFF/<</FFFFBF<FFFFFFFFFFBBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBBBBB	AS:i:0	XS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:119	YS:i:0	YT:Z:CP
+HISEQ:641:C8THKANXX:2:1101:1992:2491_2:N:0:ATCACG/2	163	chr2_GA_converted	58740254	1	122M	=	58740291	156	AATAACCTACTTCCCTATATACCACAATCTCAAATTCCACACAATTAAATTAAAACAAACACTATAATCCACTCACCAAAAATCTTAAAATCCCATAAAAAATCCCATATAAACCCTTACAA	BBBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<FF	AS:i:0	XS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:122	YS:i:0	YT:Z:CP
+
+>>> Writing bisulfite mapping results to t11.R1_val_1_bismark_bt2_pe.bam <<<
+
+
+Reading in the sequence files /home/qszhu/workspace/5.rrbs_study/0.data/2.trim/t11.R1_val_1.fq.gz and /home/qszhu/workspace/5.rrbs_study/0.data/2.trim/t11.R2_val_2.fq.gz
+Processed 1000000 sequence pairs so far
+Processed 2000000 sequence pairs so far
+Processed 3000000 sequence pairs so far
+Processed 4000000 sequence pairs so far
+Processed 5000000 sequence pairs so far
+Processed 6000000 sequence pairs so far
+Processed 7000000 sequence pairs so far
+Processed 8000000 sequence pairs so far
+Processed 9000000 sequence pairs so far
+Processed 10000000 sequence pairs so far
+10439058 reads; of these:
+  10439058 (100.00%) were paired; of these:
+    3792703 (36.33%) aligned concordantly 0 times
+    2735260 (26.20%) aligned concordantly exactly 1 time
+    3911095 (37.47%) aligned concordantly >1 times
+63.67% overall alignment rate
+10439058 reads; of these:
+  10439058 (100.00%) were paired; of these:
+    3704923 (35.49%) aligned concordantly 0 times
+    2756769 (26.41%) aligned concordantly exactly 1 time
+    3977366 (38.10%) aligned concordantly >1 times
+64.51% overall alignment rate
+Processed 10439058 sequences in total
+
+
+Successfully deleted the temporary files t11.R1_val_1.fq.gz_C_to_T.fastq and t11.R2_val_2.fq.gz_G_to_A.fastq
+
+Final Alignment report
+======================
+Sequence pairs analysed in total:	10439058
+Number of paired-end alignments with a unique best hit:	5856633
+Mapping efficiency:	56.1%
+
+Sequence pairs with no alignments under any condition:	1034971
+Sequence pairs did not map uniquely:	3547454
+Sequence pairs which were discarded because genomic sequence could not be extracted:	0
+
+Number of sequence pairs with unique best (first) alignment came from the bowtie output:
+CT/GA/CT:	3050687	((converted) top strand)
+GA/CT/CT:	0	(complementary to (converted) top strand)
+GA/CT/GA:	0	(complementary to (converted) bottom strand)
+CT/GA/GA:	2805946	((converted) bottom strand)
+
+Number of alignments to (merely theoretical) complementary strands being rejected in total:	0
+
+Final Cytosine Methylation Report
+=================================
+Total number of C's analysed:	342705214
+
+Total methylated C's in CpG context:	4917392
+Total methylated C's in CHG context:	927680
+Total methylated C's in CHH context:	1592578
+Total methylated C's in Unknown context:	0
+
+Total unmethylated C's in CpG context:	56533963
+Total unmethylated C's in CHG context:	102336106
+Total unmethylated C's in CHH context:	176397495
+Total unmethylated C's in Unknown context:	0
+
+C methylated in CpG context:	8.0%
+C methylated in CHG context:	0.9%
+C methylated in CHH context:	0.9%
+Can't determine percentage of methylated Cs in unknown context (CN or CHN) if value was 0
+
+
+Bismark completed in 0d 2h 50m 46s
+
+====================
+Bismark run complete
+====================
+

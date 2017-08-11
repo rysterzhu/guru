@@ -1,0 +1,6 @@
+[qszhu@guru a.nucleosome_intersect_test]$ pwd
+/home/qszhu/workspace/2.nmyc/6.genetrack/a.nucleosome_intersect_tes
+
+data=/home/qszhu/workspace/2.nmyc/6.genetrack/4.genetrack_onlyForward
+bedtools intersect -a $data/1018.bed -b $data/1008.bed -f 0.5 -r -wa > 1018-1008.bed &
+bedtools intersect -a $data/1018.bed -b $data/1118.bed -f 0.5 -r -wa > 1018-1118.bed &
